@@ -60,19 +60,10 @@ Com base nesses dados, o sistema devolve um **sinal (verde, laranja ou vermelho)
 ## Diagrama de Caso de Uso (UML)
 
 ```mermaid
-usecaseDiagram
-  actor Usuario as "Usuário"
+flowchart LR
+  Usuario["Usuário"] --> UC1["Inserir glicemia pré-exercício"]
+  Usuario --> UC2["Informar tipo de exercício"]
+  Usuario --> UC3["Inserir horário da insulina rápida"]
+  Usuario --> UC4["Inserir quantidade de insulina rápida ativa"]
+  Usuario --> UC5["Avaliar segurança do treino (exibir sinal)"]
 
-  rectangle DiabetesFit {
-    usecase UC1 as "Inserir glicemia pré-exercício"
-    usecase UC2 as "Informar tipo de exercício"
-    usecase UC3 as "Inserir horário da insulina rápida"
-    usecase UC4 as "Inserir quantidade de insulina rápida ativa"
-    usecase UC5 as "Avaliar segurança do treino (exibir sinal)"
-  }
-
-  Usuario --> UC1
-  Usuario --> UC2
-  Usuario --> UC3
-  Usuario --> UC4
-  Usuario --> UC5
