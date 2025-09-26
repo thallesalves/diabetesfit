@@ -30,9 +30,9 @@ Com base nesses dados, o sistema devolve um **sinal (verde, laranja ou vermelho)
 
 - **RF05 – Exibir resultado em cores**  
   O sistema deve calcular e exibir ao usuário um sinal:  
-  - 🟢 Verde: seguro para treinar  
-  - 🟠 Laranja: atenção, possível risco  
-  - 🔴 Vermelho: não recomendado iniciar treino  
+  - Verde: seguro para treinar  
+  - Laranja: atenção, possível risco  
+  - Vermelho: não recomendado iniciar treino  
   **Prioridade:** Obrigatório  
 
 ---
@@ -56,3 +56,23 @@ Com base nesses dados, o sistema devolve um **sinal (verde, laranja ou vermelho)
 4. Implementar as regras em JavaScript.  
 
 ---
+
+## Diagrama de Caso de Uso (UML)
+
+```mermaid
+usecaseDiagram
+  actor Usuario as "Usuário"
+
+  rectangle DiabetesFit {
+    usecase UC1 as "Inserir glicemia pré-exercício"
+    usecase UC2 as "Informar tipo de exercício"
+    usecase UC3 as "Inserir horário da insulina rápida"
+    usecase UC4 as "Inserir quantidade de insulina rápida ativa"
+    usecase UC5 as "Avaliar segurança do treino (exibir sinal)"
+  }
+
+  Usuario --> UC1
+  Usuario --> UC2
+  Usuario --> UC3
+  Usuario --> UC4
+  Usuario --> UC5
