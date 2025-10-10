@@ -59,11 +59,17 @@ Com base nesses dados, o sistema devolve um **sinal (verde, laranja ou vermelho)
 
 ## Diagrama de Caso de Uso (UML)
 
-```mermaid
-flowchart LR
-  Usuario["Usuário"] --> UC1["Inserir glicemia pré-exercício"]
-  Usuario --> UC2["Informar tipo de exercício"]
-  Usuario --> UC3["Inserir horário da insulina rápida"]
-  Usuario --> UC4["Inserir quantidade de insulina rápida ativa"]
-  Usuario --> UC5["Avaliar segurança do treino (exibir sinal)"]
+O diagrama abaixo representa as interações principais do usuário com o sistema DiabetesFit e as dependências funcionais entre os casos de uso.
 
+![Diagrama de Caso de Uso](diabetesfit/diagramas/diagrama-caso-uso-diabetesfit.png)
+
+## Descrição
+- **Ator:** Usuário (pessoa com diabetes que deseja verificar a segurança para iniciar o treino)
+- **Casos de uso principais:**
+  - Inserir glicemia pré-treino  
+  - Informar tipo de exercício  
+  - Inserir horário da insulina rápida  
+  - Inserir quantidade de insulina rápida ativa  
+- **Caso de uso central:** Avaliar segurança do treino (exibir sinal verde, laranja ou vermelho)
+- **Relacionamentos:**  
+  - O caso “Avaliar segurança do treino” **inclui** todos os quatro casos anteriores, pois depende dessas informações para processar o resultado.
