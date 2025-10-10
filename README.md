@@ -61,7 +61,7 @@ Com base nesses dados, o sistema devolve um **sinal (verde, laranja ou vermelho)
 
 O diagrama abaixo representa as interações principais do usuário com o sistema DiabetesFit e as dependências funcionais entre os casos de uso.
 
-![Diagrama de Caso de Uso](diabetesfit/diagramas/diagrama-caso-uso-diabetesfit.png)
+![Diagrama de Caso de Uso](diagramas\diagrama-caso-uso-diabetesfit.png)
 
 ## Descrição
 - **Ator:** Usuário (pessoa com diabetes que deseja verificar a segurança para iniciar o treino)
