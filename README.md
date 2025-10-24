@@ -42,7 +42,7 @@ O comportamento é semelhante ao de uma **calculadora inteligente de segurança 
 ## Próximas Etapas de Desenvolvimento
 
 1. Validar os requisitos funcionais e não funcionais.  
-2. Criar os **diagramas UML** (caso de uso e classes).  
+2. Criar os **diagramas UML** (caso de uso, classes, sequência, atividades e estados).  
 3. Desenvolver um **protótipo de interface em HTML/CSS**.  
 4. Implementar as **regras de negócio em JavaScript**.  
 5. Realizar **testes manuais** de fluxo.  
@@ -133,9 +133,61 @@ Classe principal responsável por avaliar se é seguro iniciar o treino.
 
 ---
 
+## Diagrama de Sequência (UML)
+
+Representa a ordem de interação entre os objetos durante a execução do caso de uso “Avaliar Segurança do Treino”.
+
+![Diagrama de Sequência](docs/modelagem/diagrama-de-sequencia-diabetesfit.png)
+
+### Descrição
+1. O **Usuário** informa os dados na **Interface**.  
+2. A Interface envia os dados ao **AvaliadorSeguranca**.  
+3. O Avaliador chama métodos de **Glicemia**, **Insulina** e **Treino** para validar as entradas.  
+4. O Avaliador processa e retorna o nível de segurança (verde, laranja ou vermelho).  
+5. A Interface exibe o resultado ao Usuário.
+
+---
+
+## Diagrama de Atividades (UML)
+
+Representa o fluxo de execução do processo de avaliação, incluindo as decisões condicionais e ações do sistema.
+
+![Diagrama de Atividades](docs/modelagem/diagrama-de-atividade-diabetesfit.png)
+
+### Fluxo
+1. Início  
+2. Inserir dados (glicemia, insulina, treino)  
+3. Validar dados  
+4. Decisão: Dados válidos?  
+   - ❌ Não → Exibir erro e solicitar correção  
+   - ✅ Sim → Calcular nível de segurança  
+5. Exibir resultado  
+6. Fim  
+
+---
+
+## Diagrama de Estados (UML)
+
+Representa os estados possíveis do objeto **AvaliadorSeguranca** e as transições entre eles ao longo do processo.
+
+![Diagrama de Estados](docs/modelagem/diagrama-de-estados-diabetesfit.png)
+
+### Estados Principais
+- **Aguardando dados:** sistema inicializa e espera entrada do usuário.  
+- **Recebendo dados:** dados sendo inseridos.  
+- **Validando dados:** verifica consistência e intervalo de valores.  
+- **Calculando nível de segurança:** aplica regras de avaliação.  
+- **Exibindo resultado:** apresenta o sinal visual ao usuário.  
+
+### Transições
+- [dados válidos] → Calculando nível de segurança  
+- [dados inválidos] → Retorna para Aguardando dados  
+
+---
+
 ## Versão Atual
-**v0.2 – Modelagem concluída (Requisitos + Caso de Uso + Diagrama de Classes)**  
-*Próxima etapa:* Prototipagem em HTML/CSS.
+**v0.3 – Modelagem Comportamental Concluída (Sequência + Atividades + Estados)**  
+*Próxima etapa:* Prototipagem e implementação em HTML/CSS/JavaScript.
 
 ---
 
