@@ -1,0 +1,18 @@
+# Arquivos temporários
+*.tmp
+*.bak
+*.log
+
+# Pastas do Visual Paradigm
+*.vpp
+*.bak_*
+
+# Diretórios temporários
+.vscode/
+tmp/
+node_modules/
+__pycache__/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db

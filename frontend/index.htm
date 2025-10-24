@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DiabetesFit – Avaliador de Segurança no Treino</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>DiabetesFit</h1>
+      <p>Verifique se é seguro iniciar seu treino</p>
+    </header>
+
+    <main>
+      <form id="formAvaliacao">
+        <!-- Campo 1 -->
+        <label for="glicemia">Glicemia pré-treino (mg/dL):</label>
+        <input type="number" id="glicemia" name="glicemia" required />
+
+        <!-- Campo 2 -->
+        <label for="insulina">Insulina rápida ativa (U):</label>
+        <input
+          type="number"
+          id="insulina"
+          name="insulina"
+          step="0.1"
+          required
+        />
+
+        <!-- Campo 3 (NOVO) -->
+        <label for="horarioInsulina"
+          >Horário da última aplicação de insulina rápida:</label
+        >
+        <input
+          type="time"
+          id="horarioInsulina"
+          name="horarioInsulina"
+          required
+        />
+
+        <!-- Campo 4 -->
+        <label for="treino">Tipo de treino:</label>
+        <select id="treino" name="treino" required>
+          <option value="">Selecione</option>
+          <option value="musculacao">Musculação</option>
+          <option value="crossfit">CrossFit</option>
+          <option value="corrida">Corrida</option>
+          <option value="natacao">Natação</option>
+          <option value="ciclismo">Ciclismo</option>
+        </select>
+
+        <!-- Botão -->
+        <button type="submit">Avaliar Segurança</button>
+      </form>
+
+      <section id="resultado" class="oculto">
+        <h2>Resultado</h2>
+        <p id="mensagem"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 DiabetesFit</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
