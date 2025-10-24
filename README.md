@@ -53,7 +53,7 @@ O comportamento é semelhante ao de uma **calculadora inteligente de segurança 
 
 O diagrama abaixo representa as interações principais do usuário com o sistema **DiabetesFit** e as dependências funcionais entre os casos de uso.
 
-![Diagrama de Caso de Uso](docs/modelagem/diagrama-caso-uso-diabetesfit.png)
+![Diagrama de Caso de Uso](docs/modelagem/diagramacasousodiabetesfit.png)
 
 ### Descrição
 - **Ator:** Usuário (pessoa com diabetes que deseja verificar a segurança para iniciar o treino)
@@ -72,7 +72,7 @@ O diagrama abaixo representa as interações principais do usuário com o sistem
 
 O diagrama abaixo representa a estrutura lógica do sistema, mostrando as principais classes, atributos, métodos e seus relacionamentos.
 
-![Diagrama de Classes](docs/modelagem/diagrama-de-classes-diabetesfit.png)
+![Diagrama de Classes](docs/modelagem/diagramadeclassesdiabetesfit.png)
 
 ### Descrição das Classes
 
@@ -137,7 +137,7 @@ Classe principal responsável por avaliar se é seguro iniciar o treino.
 
 Representa a ordem de interação entre os objetos durante a execução do caso de uso “Avaliar Segurança do Treino”.
 
-![Diagrama de Sequência](docs/modelagem/diagrama-de-sequencia-diabetesfit.png)
+![Diagrama de Sequência](docs/modelagem/diagramadesequenciadiabetesfit.png)
 
 ### Descrição
 1. O **Usuário** informa os dados na **Interface**.  
@@ -152,7 +152,7 @@ Representa a ordem de interação entre os objetos durante a execução do caso 
 
 Representa o fluxo de execução do processo de avaliação, incluindo as decisões condicionais e ações do sistema.
 
-![Diagrama de Atividades](docs/modelagem/diagrama-de-atividade-diabetesfit.png)
+![Diagrama de Atividades](docs/modelagem/diagramadeatividadediabetesfit.png)
 
 ### Fluxo
 1. Início  
@@ -170,7 +170,7 @@ Representa o fluxo de execução do processo de avaliação, incluindo as decis�
 
 Representa os estados possíveis do objeto **AvaliadorSeguranca** e as transições entre eles ao longo do processo.
 
-![Diagrama de Estados](docs/modelagem/diagrama-de-estados-diabetesfit.png)
+![Diagrama de Estados](docs/modelagem/diagramadeestadosdiabetesfit.png)
 
 ### Estados Principais
 - **Aguardando dados:** sistema inicializa e espera entrada do usuário.  
