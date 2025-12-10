@@ -46,6 +46,24 @@ O comportamento é semelhante ao de uma **calculadora inteligente de segurança 
 3. Desenvolver um **protótipo de interface em HTML/CSS**.  
 4. Implementar as **regras de negócio em JavaScript**.  
 5. Realizar **testes manuais** de fluxo.  
+6. Revisar as **regras de negócio**. 
+7. Evoluir o **design e o feedback visual** do resultado.
+
+---
+
+## Estrutura da Implementação
+O projeto agora utiliza **JavaScript moderno com ES Modules**, seguindo boas práticas de separação de responsabilidades.
+frontend/
+│
+├── index.html                → Interface e inclusão dos scripts via type="module"
+├── style.css                 → Estilização geral
+├── main.js                   → Arquivo principal que orquestra o fluxo
+│
+└── modules/
+    ├── format.js             → Normalização de valores (números e horário)
+    ├── validators.js         → Validação das entradas do usuário
+    ├── evaluator.js          → Regras de avaliação de segurança
+    └── ui.js                 → Funções para exibição no DOM
 
 ---
 
@@ -186,8 +204,8 @@ Representa os estados possíveis do objeto **AvaliadorSeguranca** e as transiç�
 ---
 
 ## Versão Atual
-**v0.3 – Modelagem Comportamental Concluída (Sequência + Atividades + Estados)**  
-*Próxima etapa:* Prototipagem e implementação em HTML/CSS/JavaScript.
+**v0.4 – Início da Implementação (HTML/CSS concluídos + JS modular iniciado)**
+*Próxima etapa:* Finalizar a lógica de negócio no JavaScript e integrar avaliação + exibição.
 
 ---
 
