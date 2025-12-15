@@ -101,6 +101,8 @@ button:hover {
   color: #db4437;
 }
 
+.erro { color: #db4437; }
+
 /*7) RODAPÉ*/
 footer {
   text-align: center;
@@ -108,3 +110,4 @@ footer {
   font-size: 0.9rem;
   color: #555;
 }
+

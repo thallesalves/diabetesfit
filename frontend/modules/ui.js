@@ -1,13 +1,15 @@
-// Renderiza resultados e erros na UI
+// modules/ui.js
+// Renderiza resultados e erros na UI de acordo com o contrato do evaluator:
+// { nivel: "verde"|"laranja"|"vermelho", titulo: string, motivos: string[], acoes: string[] }
 
 export function hideResult(box) {
   box.classList.add("oculto");
+  box.classList.remove("verde", "laranja", "vermelho", "erro");
   box.innerHTML = "";
 }
 
 export function renderErrors(box, errors) {
-  box.classList.remove("oculto");
-  box.classList.remove("verde", "laranja", "vermelho");
+  box.classList.remove("oculto", "verde", "laranja", "vermelho");
   box.classList.add("erro");
 
   box.innerHTML = `
@@ -17,16 +19,27 @@ export function renderErrors(box, errors) {
 }
 
 export function renderResult(box, result) {
-  box.classList.remove("oculto", "erro", "verde", "laranja", "vermelho");
-  box.classList.add(result.level); // classe CSS = verde|laranja|vermelho
+  // Segurança: evita quebrar a tela se vier algo inesperado
+  if (!result || !result.nivel) {
+    renderErrors(box, ["Resultado inválido retornado pelo avaliador."]);
+    return;
+  }
 
-  const notesHtml = result.notes?.length
-    ? `<ul class="notes">${result.notes.map((n) => `<li>${n}</li>`).join("")}</ul>`
+  box.classList.remove("oculto", "erro", "verde", "laranja", "vermelho");
+  box.classList.add(result.nivel);
+
+  const motivosHtml = (result.motivos?.length)
+    ? `<h3>Motivos</h3><ul>${result.motivos.map((m) => `<li>${m}</li>`).join("")}</ul>`
+    : "";
+
+  const acoesHtml = (result.acoes?.length)
+    ? `<h3>Ações</h3><ul>${result.acoes.map((a) => `<li>${a}</li>`).join("")}</ul>`
     : "";
 
   box.innerHTML = `
     <h2>Resultado</h2>
-    <div class="pill ${result.level}">${result.label}</div>
-    ${notesHtml}
+    <p><strong>${result.titulo}</strong></p>
+    ${motivosHtml}
+    ${acoesHtml}
   `;
 }
