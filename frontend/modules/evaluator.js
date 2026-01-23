@@ -12,7 +12,9 @@ const LIMITES = {
   INSULINA_BAIXA: 2,
 
   INSULINA_RECENTE_MIN: 120,
+  INSULINA_MUITO_RECENTE_MIN: 15,
 };
+
 
 // 2) Função pública do módulo (motor de decisão)
 export function evaluateSafety({
@@ -119,8 +121,10 @@ function checkOrangeRules({
   tipoTreino,
 }) {
   const insulinaRecente = minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN;
+  const insulinaMuitoRecente =
+    minutosDesdeAplicacao <= LIMITES.INSULINA_MUITO_RECENTE_MIN;
 
-  // 70–85 para aeróbico, independente da insulina
+  // O1) 70–85 para aeróbico, independente da insulina
   if (isAerobic(tipoTreino) && glicemia >= 70 && glicemia <= 85) {
     return buildResult({
       nivel: "laranja",
@@ -133,18 +137,56 @@ function checkOrangeRules({
     });
   }
 
-  // 70–100 com >3U recente (qualquer treino)
+  // O2) Aeróbico + insulina MUITO recente (até 15 min) com glicemia < 100
+  // Ex.: glicemia 90, 2U, 15 min → NÃO pode ser verde
   if (
     isAerobic(tipoTreino) &&
-    glicemia >= 70 &&
-    glicemia <= 100 &&
+    glicemia < 100 &&
+    insulinaAtiva >= LIMITES.INSULINA_BAIXA &&
+    insulinaMuitoRecente
+  ) {
+    return buildResult({
+      nivel: "laranja",
+      titulo: "Atenção",
+      motivos: [
+        "Insulina aplicada muito recentemente antes de exercício aeróbico com glicemia < 100.",
+      ],
+      acoes: [
+        "Redobre a atenção para queda rápida.",
+        "Tenha carboidrato disponível e monitore durante o treino.",
+      ],
+    });
+  }
+
+  // O3) Aeróbico + insulina recente >2U com glicemia < 100 (regra ampla que você definiu)
+  if (
+    isAerobic(tipoTreino) &&
+    glicemia < 100 &&
     insulinaAtiva > LIMITES.INSULINA_BAIXA &&
     insulinaRecente
   ) {
     return buildResult({
       nivel: "laranja",
       titulo: "Atenção",
-      motivos: ["Glicemia na faixa inferior com insulina ativa recente."],
+      motivos: ["Glicemia < 100 com insulina ativa recente em exercício aeróbico."],
+      acoes: [
+        "Avaliar ingestão de carboidrato antes do treino.",
+        "Monitorar glicemia com mais frequência.",
+      ],
+    });
+  }
+
+  // O4) Qualquer treino + insulina recente >3U com glicemia 70–100
+  if (
+    glicemia >= 70 &&
+    glicemia <= 100 &&
+    insulinaAtiva > LIMITES.INSULINA_MEDIA &&
+    insulinaRecente
+  ) {
+    return buildResult({
+      nivel: "laranja",
+      titulo: "Atenção",
+      motivos: ["Glicemia 70–100 com insulina ativa recente elevada."],
       acoes: [
         "Avaliar ingestão de carboidrato.",
         "Monitorar glicemia com mais frequência.",
@@ -152,27 +194,9 @@ function checkOrangeRules({
     });
   }
 
-  // 70–100 com >2U recente para aeróbico
-  if (
-    tipoTreino === "corrida" &&
-    glicemia >= 70 &&
-    glicemia <= 100 &&
-    insulinaAtiva > LIMITES.INSULINA_BAIXA &&
-    insulinaRecente
-  ) {
-    return buildResult({
-      nivel: "laranja",
-      titulo: "Atenção",
-      motivos: ["Risco aumentado de queda glicêmica em exercício aeróbico."],
-      acoes: [
-        "Considere ajustar estratégia antes de iniciar.",
-        "Tenha carboidrato disponível durante o treino.",
-      ],
-    });
-  }
-
   return null;
 }
+
 
 // -----------------------------
 // 5) Builder de resultado
