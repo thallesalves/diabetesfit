@@ -15,7 +15,6 @@ const LIMITES = {
   INSULINA_MUITO_RECENTE_MIN: 15,
 };
 
-
 // 2) Função pública do módulo (motor de decisão)
 export function evaluateSafety({
   glicemia,
@@ -71,22 +70,20 @@ function checkRedRules({
   }
 
   // Insulina alta recente (risco elevado de hipoglicemia)
-if (
-  insulinaAtiva > LIMITES.INSULINA_ALTA &&
-  minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN
-) {
-  return buildResult({
-    nivel: "vermelho",
-    titulo: "Não iniciar o treino",
-    motivos: [
-      "Alta quantidade de insulina ativa aplicada recentemente."
-    ],
-    acoes: [
-      "Aguardar redução da insulina ativa antes do exercício.",
-      "Monitorar glicemia com atenção."
-    ]
-  });
-}
+  if (
+    insulinaAtiva > LIMITES.INSULINA_ALTA &&
+    minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN
+  ) {
+    return buildResult({
+      nivel: "vermelho",
+      titulo: "Não iniciar o treino",
+      motivos: ["Alta quantidade de insulina ativa aplicada recentemente."],
+      acoes: [
+        "Aguardar redução da insulina ativa antes do exercício.",
+        "Monitorar glicemia com atenção.",
+      ],
+    });
+  }
 
   // Hiperglicemia > 180 com exceções
   if (glicemia > LIMITES.HIPER) {
@@ -168,7 +165,9 @@ function checkOrangeRules({
     return buildResult({
       nivel: "laranja",
       titulo: "Atenção",
-      motivos: ["Glicemia < 100 com insulina ativa recente em exercício aeróbico."],
+      motivos: [
+        "Glicemia < 100 com insulina ativa recente em exercício aeróbico.",
+      ],
       acoes: [
         "Avaliar ingestão de carboidrato antes do treino.",
         "Monitorar glicemia com mais frequência.",
@@ -196,7 +195,6 @@ function checkOrangeRules({
 
   return null;
 }
-
 
 // -----------------------------
 // 5) Builder de resultado

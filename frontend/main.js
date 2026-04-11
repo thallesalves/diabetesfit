@@ -1,8 +1,8 @@
 // frontend/main.js
-import { normalizeNumber, minutesSince } from "./modules/format.js";
-import { validateInputs } from "./modules/validators.js";
-import { evaluateSafety } from "./modules/evaluator.js";
-import { renderResult, renderErrors, hideResult } from "./modules/ui.js";
+import { normalizeNumber, minutesSince } from "./modules/format.js"; // funções de formatação (normalização de número e cálculo de minutos desde um horário)
+import { validateInputs } from "./modules/validators.js"; // função de validação dos inputs do formulário
+import { evaluateSafety } from "./modules/evaluator.js"; // função que contém a lógica de avaliação da segurança do treino (ela recebe os dados normalizados e retorna um resultado com a avaliação)
+import { renderResult, renderErrors, hideResult } from "./modules/ui.js"; // funções de renderização (renderResult mostra o resultado da avaliação, renderErrors mostra os erros de validação e hideResult esconde a caixa de resultado)
 
 //Aguarda DOM carregado (garantia contra race conditions)
 document.addEventListener("DOMContentLoaded", () => {

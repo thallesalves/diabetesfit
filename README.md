@@ -203,6 +203,64 @@ Representa os estados possíveis do objeto **AvaliadorSeguranca** e as transiç�
 
 ---
 
+## Regras de Negócio (Em Refinamento)
+
+Esta seção descreve as regras utilizadas pelo sistema para classificar o nível de segurança do treino.
+
+⚠️ **Importante:**  
+As regras abaixo ainda estão em processo de refinamento e validação clínica.  
+Podem sofrer ajustes conforme novos cenários são analisados.
+
+---
+
+### 🔴 Regras de Nível Vermelho (Alto Risco)
+
+O sistema classifica como **vermelho (não iniciar o treino)** quando ocorre qualquer uma das condições abaixo:
+
+- Glicemia **abaixo de 70 mg/dL**
+- Glicemia **acima de 180 mg/dL**, exceto:
+  - Quando o exercício é aeróbico  
+  - E existe insulina ativa recente (≤ 120 minutos)
+- Insulina ativa **acima de 5U aplicada há menos de 2 horas**
+
+---
+
+### 🟠 Regras de Nível Laranja (Atenção)
+
+O sistema classifica como **laranja (atenção)** quando há risco moderado, incluindo:
+
+- Glicemia entre **70 e 85 mg/dL** em exercícios aeróbicos  
+- Glicemia abaixo de **100 mg/dL com insulina recente** em exercícios aeróbicos  
+- Insulina aplicada **muito recentemente (≤ 15 minutos)** em exercícios aeróbicos com glicemia < 100  
+- Glicemia entre **70 e 100 mg/dL com insulina ativa elevada (>3U)** aplicada recentemente  
+
+---
+
+### 🟢 Regra de Nível Verde (Seguro)
+
+O sistema classifica como **verde (treino liberado)** quando:
+
+- Nenhuma das condições de risco (vermelho ou laranja) é atendida
+
+---
+
+### 📌 Observações Importantes
+
+- O sistema utiliza uma abordagem baseada em **prioridade de risco**:
+  - 🔴 Vermelho → prioridade máxima  
+  - 🟠 Laranja → risco intermediário  
+  - 🟢 Verde → ausência de risco detectado  
+
+- As regras são aplicadas em ordem hierárquica:
+  1. Verificação de regras vermelhas  
+  2. Verificação de regras laranjas  
+  3. Caso nenhuma seja atendida → resultado verde  
+
+- A classificação do tipo de exercício (aeróbico ou não) influencia diretamente a avaliação.
+
+---
+
+
 ## Versão Atual
 **v0.4 – Início da Implementação (HTML/CSS concluídos + JS modular iniciado)**
 *Próxima etapa:* Finalizar a lógica de negócio no JavaScript e integrar avaliação + exibição.
