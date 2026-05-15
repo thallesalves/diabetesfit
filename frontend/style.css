@@ -1,113 +1,389 @@
-/*1) RESET E BASE GLOBAL*/
+/* =========================================
+   1) RESET E BASE GLOBAL
+========================================= */
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: "Inter", Arial, sans-serif;
-  background-color: #f7f8fa;
-  color: #222;
   margin: 0;
-  padding: 0;
+  min-height: 100vh;
+
+  font-family: "Inter", Arial, sans-serif;
+  background-color: #f4f7fb;
+  color: #1f2937;
+
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
-/*2) CABEÇALHO (HEADER)*/
+/* =========================================
+   2) HEADER
+========================================= */
+
 header {
-  background-color: #2b6cb0;
+  background: linear-gradient(135deg, #2b6cb0, #2f80ed);
   color: white;
+
   text-align: center;
-  padding: 1.5rem;
+  padding: 2rem 1rem;
 }
 
 header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 header p {
-  margin: 0.5rem 0 0;
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  opacity: 0.95;
 }
 
-/*3) ESTRUTURA PRINCIPAL*/
+/* =========================================
+   3) MAIN LAYOUT
+========================================= */
+
 main {
   flex: 1;
+
+  width: 100%;
+  max-width: 460px;
+
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 2rem;
+  gap: 1.5rem;
 }
 
-/*4) FORMULÁRIO*/
+/* =========================================
+   4) FORMULÁRIO
+========================================= */
+
 form {
   background: white;
-  border-radius: 10px;
+
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08),
+    0 2px 8px rgba(15, 23, 42, 0.04);
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 label {
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
 }
 
 input,
-select,
-button {
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+select {
+  width: 100%;
+
+  padding: 0.95rem 1rem;
+
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+
+  background-color: white;
+
   font-size: 1rem;
+  color: #111827;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
+input:focus,
+select:focus {
+  outline: none;
+
+  border-color: #2f80ed;
+
+  box-shadow: 0 0 0 4px rgba(47, 128, 237, 0.15);
+}
+
+/* =========================================
+   5) BOTÃO
+========================================= */
+
 button {
-  background-color: #2b6cb0;
+  margin-top: 0.5rem;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 1rem;
+
+  background: linear-gradient(135deg, #2b6cb0, #2f80ed);
   color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+
   cursor: pointer;
-  transition: background-color 0.3s;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.2s ease;
 }
 
 button:hover {
-  background-color: #22589a;
+  opacity: 0.95;
 }
 
-/*5) RESULTADO*/
+button:active {
+  transform: scale(0.98);
+}
+
+/* =========================================
+   6) RESULTADO
+========================================= */
+
 #resultado {
-  margin-top: 2rem;
-  text-align: center;
+  width: 100%;
 }
 
 .oculto {
   display: none;
 }
 
-/*6) FEEDBACK POR COR*/
-.verde {
-  color: #0f9d58;
+.resultado-card {
+  background: white;
+
+  border-radius: 20px;
+
+  padding: 1.6rem;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08),
+    0 2px 8px rgba(15, 23, 42, 0.04);
+
+  border-left: 6px solid transparent;
+
+  animation: fadeIn 0.25s ease;
 }
 
-.laranja {
-  color: #f4b400;
+.resultado-card h2 {
+  margin: 0 0 1.5rem;
+
+  font-size: 2rem;
+  font-weight: 700;
+
+  text-align: center;
 }
 
-.vermelho {
-  color: #db4437;
+/* =========================================
+   7) SEÇÕES
+========================================= */
+
+.resultado-section {
+  margin-top: 1.5rem;
 }
 
-.erro { color: #db4437; }
+.resultado-section h3 {
+  margin-bottom: 0.8rem;
 
-/*7) RODAPÉ*/
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  color: #6b7280;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================
+   8) ITENS
+========================================= */
+
+.resultado-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.resultado-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+
+  padding: 1rem;
+
+  border-radius: 14px;
+
+  background: #f9fafb;
+
+  border: 1px solid #e5e7eb;
+}
+
+.resultado-item p {
+  margin: 0;
+
+  font-size: 0.97rem;
+  line-height: 1.5;
+
+  color: #374151;
+}
+
+/* =========================================
+   9) ÍCONES
+========================================= */
+
+.resultado-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  color: white;
+}
+
+/* =========================================
+   10) VERDE
+========================================= */
+
+.verde .resultado-card {
+  border-left-color: #16a34a;
+}
+
+.verde .resultado-card h2 {
+  color: #15803d;
+}
+
+.verde .resultado-item-motivo {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.verde .resultado-item-motivo .resultado-icon {
+  background: #16a34a;
+}
+
+/* =========================================
+   11) LARANJA
+========================================= */
+
+.laranja .resultado-card {
+  border-left-color: #f59e0b;
+}
+
+.laranja .resultado-card h2 {
+  color: #d97706;
+}
+
+.laranja .resultado-item-motivo {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.laranja .resultado-item-motivo .resultado-icon {
+  background: #f59e0b;
+}
+
+/* =========================================
+   12) VERMELHO
+========================================= */
+
+.vermelho .resultado-card {
+  border-left-color: #ef4444;
+}
+
+.vermelho .resultado-card h2 {
+  color: #dc2626;
+}
+
+.vermelho .resultado-item-motivo {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.vermelho .resultado-item-motivo .resultado-icon {
+  background: #ef4444;
+}
+
+/* =========================================
+   13) AÇÕES (sempre verdes)
+========================================= */
+
+.resultado-item-acao {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.resultado-item-acao .resultado-icon {
+  background: #16a34a;
+}
+
+.resultado-item-acao p {
+  color: #166534;
+}
+
+/* =========================================
+   14) ERROS
+========================================= */
+
+.erro {
+  background: #fff1f2;
+
+  border: 1px solid #fecdd3;
+  border-radius: 16px;
+
+  padding: 1rem;
+}
+
+.erro h2 {
+  margin-top: 0;
+  color: #dc2626;
+}
+
+.erro li {
+  color: #7f1d1d;
+}
+
+/* =========================================
+   15) FOOTER
+========================================= */
+
 footer {
   text-align: center;
+
   padding: 1rem;
+
   font-size: 0.9rem;
-  color: #555;
+  color: #6b7280;
 }
 
+/* =========================================
+   16) ANIMAÇÕES
+========================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

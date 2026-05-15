@@ -2,6 +2,8 @@
 // Renderiza resultados e erros na UI de acordo com o contrato do evaluator:
 // { nivel: "verde"|"laranja"|"vermelho", titulo: string, motivos: string[], acoes: string[] }
 
+// modules/ui.js
+
 export function hideResult(box) {
   box.classList.add("oculto");
   box.classList.remove("verde", "laranja", "vermelho", "erro");
@@ -9,37 +11,101 @@ export function hideResult(box) {
 }
 
 export function renderErrors(box, errors) {
-  box.classList.remove("oculto", "verde", "laranja", "vermelho");
+  box.classList.remove(
+    "oculto",
+    "verde",
+    "laranja",
+    "vermelho"
+  );
+
   box.classList.add("erro");
 
   box.innerHTML = `
-    <h2>Corrija os campos</h2>
-    <ul>${errors.map((e) => `<li>${e}</li>`).join("")}</ul>
+    <div class="resultado-card">
+      <h2>Corrija os campos</h2>
+
+      <div class="resultado-items">
+        ${errors
+          .map(
+            (error) => `
+              <div class="resultado-item">
+                <span class="resultado-icon">!</span>
+                <p>${error}</p>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </div>
   `;
 }
 
 export function renderResult(box, result) {
-  // Segurança: evita quebrar a tela se vier algo inesperado
   if (!result || !result.nivel) {
-    renderErrors(box, ["Resultado inválido retornado pelo avaliador."]);
+    renderErrors(box, [
+      "Resultado inválido retornado pelo avaliador."
+    ]);
+
     return;
   }
 
-  box.classList.remove("oculto", "erro", "verde", "laranja", "vermelho");
+  box.classList.remove(
+    "oculto",
+    "erro",
+    "verde",
+    "laranja",
+    "vermelho"
+  );
+
   box.classList.add(result.nivel);
 
-  const motivosHtml = (result.motivos?.length)
-    ? `<h3>Motivos</h3><ul>${result.motivos.map((m) => `<li>${m}</li>`).join("")}</ul>`
-    : "";
+  const motivosHtml = createList(
+    "Motivos",
+    result.motivos,
+    "motivo"
+  );
 
-  const acoesHtml = (result.acoes?.length)
-    ? `<h3>Ações</h3><ul>${result.acoes.map((a) => `<li>${a}</li>`).join("")}</ul>`
-    : "";
+  const acoesHtml = createList(
+    "Ações recomendadas",
+    result.acoes,
+    "acao"
+  );
 
   box.innerHTML = `
-    <h2>Resultado</h2>
-    <p><strong>${result.titulo}</strong></p>
-    ${motivosHtml}
-    ${acoesHtml}
+    <article class="resultado-card">
+      <h2>${result.titulo}</h2>
+
+      ${motivosHtml}
+
+      ${acoesHtml}
+    </article>
+  `;
+}
+
+function createList(title, items, type) {
+  if (!items || items.length === 0) {
+    return "";
+  }
+
+  return `
+    <section class="resultado-section">
+      <h3>${title}</h3>
+
+      <div class="resultado-items">
+        ${items
+          .map(
+            (item) => `
+              <div class="resultado-item resultado-item-${type}">
+                <span class="resultado-icon">
+                  ${type === "motivo" ? "!" : "✓"}
+                </span>
+
+                <p>${item}</p>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
   `;
 }
