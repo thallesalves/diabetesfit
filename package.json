@@ -1,0 +1,27 @@
+{
+  "name": "diabetesfit",
+  "version": "1.0.0",
+  "description": "O **DiabetesFit** é um aplicativo web simples que coleta informações do usuário sobre:\r - Glicemia pré-exercício  \r - Tipo de exercício  \r - Quantidade de insulina rápida ativa",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thallesalves/diabetesfit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/thallesalves/diabetesfit/issues"
+  },
+  "homepage": "https://github.com/thallesalves/diabetesfit#readme",
+  "devDependencies": {
+    "vitest": "^4.1.6"
+  }
+}
