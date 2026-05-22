@@ -1,272 +1,312 @@
-# DiabetesFit – Definição de Requisitos e Modelagem
+# DiabetesFit — Avaliador de Segurança para Exercício e Diabetes
 
 ## Visão Geral
-O **DiabetesFit** é um aplicativo web simples que coleta informações do usuário sobre:
-- Glicemia pré-exercício  
-- Tipo de exercício  
-- Quantidade de insulina rápida ativa  
 
-Com base nesses dados, o sistema devolve um **sinal (verde, laranja ou vermelho)** indicando se é seguro iniciar o treino.
+O **DiabetesFit** é um aplicativo web desenvolvido para avaliar, de forma simples e rápida, se é seguro iniciar um treino com base em fatores glicêmicos e no contexto da insulina ativa.
 
-O projeto é voltado para **educação e prototipagem funcional**, sem armazenamento de dados nem autenticação de usuários.  
-O comportamento é semelhante ao de uma **calculadora inteligente de segurança glicêmica**.
+O sistema funciona como uma calculadora inteligente de segurança para exercício físico em pessoas com diabetes.
 
----
+O usuário informa:
+- glicemia pré-treino;
+- quantidade de insulina rápida ativa;
+- horário da última aplicação;
+- tipo de exercício.
 
-## Requisitos Funcionais (RF)
+Com base nessas informações, o sistema retorna um nível de segurança:
 
-| Código | Descrição | Prioridade |
-|--------|------------|-------------|
-| **RF01** | Inserir glicemia pré-exercício. O usuário deve informar manualmente sua glicemia antes do treino. | Obrigatório |
-| **RF02** | Informar tipo de exercício. O usuário deve selecionar entre opções pré-definidas (ex: musculação, corrida, natação). | Obrigatório |
-| **RF03** | Inserir o horário de aplicação da insulina rápida. | Obrigatório |
-| **RF04** | Inserir quantidade de insulina rápida ativa no corpo. | Obrigatório |
-| **RF05** | Exibir resultado em cores (verde, laranja ou vermelho) após o cálculo. | Obrigatório |
-
-🟢 **Verde:** seguro para treinar  
-🟠 **Laranja:** atenção, possível risco  
-🔴 **Vermelho:** não recomendado iniciar o treino  
+🟢 Verde → treino liberado  
+🟠 Laranja → atenção / risco moderado  
+🔴 Vermelho → não recomendado iniciar o treino  
 
 ---
 
-## Requisitos Não Funcionais (RNF)
+# Objetivos do Projeto
 
-| Código | Descrição |
-|--------|------------|
-| **RNF01** | Compatibilidade com navegadores modernos (Chrome, Firefox, Edge). |
-| **RNF02** | Interface simples e responsiva, adaptada para celular e desktop. |
-| **RNF03** | Não deve salvar dados ou informações do usuário (sem persistência). |
-
----
-
-## Próximas Etapas de Desenvolvimento
-
-1. Validar os requisitos funcionais e não funcionais.  
-2. Criar os **diagramas UML** (caso de uso, classes, sequência, atividades e estados).  
-3. Desenvolver um **protótipo de interface em HTML/CSS**.  
-4. Implementar as **regras de negócio em JavaScript**.  
-5. Realizar **testes manuais** de fluxo.  
-6. Revisar as **regras de negócio**. 
-7. Evoluir o **design e o feedback visual** do resultado.
+O projeto foi criado com foco em:
+- aprendizado prático de Engenharia de Software;
+- arquitetura frontend modular;
+- modelagem UML;
+- implementação de regras de negócio reais;
+- testes automatizados;
+- construção incremental de software.
 
 ---
 
-## Estrutura da Implementação
-O projeto agora utiliza **JavaScript moderno com ES Modules**, seguindo boas práticas de separação de responsabilidades.
-frontend/
+# Funcionalidades Implementadas
+
+## Avaliação clínica
+- cálculo automático do nível de segurança;
+- regras clínicas organizadas por prioridade;
+- diferenciação entre exercícios aeróbicos e não aeróbicos;
+- tratamento de exceções clínicas.
+
+---
+
+## Interface
+- formulário responsivo;
+- feedback visual moderno;
+- cards contextuais por nível de risco;
+- renderização dinâmica via JavaScript.
+
+---
+
+## Arquitetura
+- ES Modules;
+- separação de responsabilidades;
+- módulos independentes;
+- baixo acoplamento;
+- alta coesão.
+
+---
+
+## Testes Automatizados
+- Vitest configurado;
+- testes unitários do evaluator;
+- testes de casos de fronteira;
+- testes de regressão clínica.
+
+---
+
+# Estrutura do Projeto
+
+```txt
+diabetesfit/
 │
-├── index.html                → Interface e inclusão dos scripts via type="module"
-├── style.css                 → Estilização geral
-├── main.js                   → Arquivo principal que orquestra o fluxo
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   ├── main.js
+│   │
+│   └── modules/
+│       ├── evaluator.js
+│       ├── format.js
+│       ├── training.js
+│       ├── ui.js
+│       └── validators.js
 │
-└── modules/
-    ├── format.js             → Normalização de valores (números e horário)
-    ├── validators.js         → Validação das entradas do usuário
-    ├── evaluator.js          → Regras de avaliação de segurança
-    └── ui.js                 → Funções para exibição no DOM
+├── tests/
+│   └── evaluator.test.js
+│
+├── docs/
+│   ├── regras-clinicas.md
+│   │
+│   └── modelagem/
+│       ├── diagramacasousodiabetesfit.png
+│       ├── diagramadeclassesdiabetesfit.png
+│       ├── diagramadesequenciadiabetesfit.png
+│       ├── diagramadeatividadediabetesfit.png
+│       └── diagramadeestadosdiabetesfit.png
+│
+├── package.json
+├── package-lock.json
+└── README.md
+```
 
 ---
 
-## Diagrama de Caso de Uso (UML)
+# Tecnologias Utilizadas
 
-O diagrama abaixo representa as interações principais do usuário com o sistema **DiabetesFit** e as dependências funcionais entre os casos de uso.
+## Frontend
+- HTML5
+- CSS3
+- JavaScript ES Modules
 
-![Diagrama de Caso de Uso](docs/modelagem/diagramacasousodiabetesfit.png)
+## Testes
+- Vitest
 
-### Descrição
-- **Ator:** Usuário (pessoa com diabetes que deseja verificar a segurança para iniciar o treino)
-- **Casos de uso principais:**
-  - Inserir glicemia pré-treino  
-  - Informar tipo de exercício  
-  - Inserir horário da insulina rápida  
-  - Inserir quantidade de insulina rápida ativa  
-- **Caso de uso central:** Avaliar segurança do treino (exibir sinal verde, laranja ou vermelho)
-- **Relacionamentos:**  
-  - O caso “Avaliar segurança do treino” **inclui** todos os quatro casos anteriores, pois depende dessas informações para processar o resultado.
-
----
-
-## Diagrama de Classes (UML)
-
-O diagrama abaixo representa a estrutura lógica do sistema, mostrando as principais classes, atributos, métodos e seus relacionamentos.
-
-![Diagrama de Classes](docs/modelagem/diagramadeclassesdiabetesfit.png)
-
-### Descrição das Classes
-
-#### **Glicemia**
-Representa os dados de glicemia coletados antes do treino.
-
-- **Atributos:**
-  - `valor: float` → valor atual da glicemia informado pelo usuário.  
-  - `horarioMedicao: datetime` → horário em que a glicemia foi medida.
-
-- **Métodos:**
-  - `validar(): bool` → verifica se o valor informado está dentro de um intervalo aceitável.
+## Ferramentas
+- VSCode
+- Git
+- GitHub
+- Visual Paradigm
 
 ---
 
-#### **Insulina**
-Representa as informações sobre a insulina rápida ativa no corpo.
+# Arquitetura da Aplicação
 
-- **Atributos:**
-  - `quantidadeAtiva: float` → quantidade de insulina rápida ativa.  
-  - `horarioAplicacao: datetime` → horário da última aplicação de insulina.
+O projeto segue uma arquitetura modular.
 
-- **Métodos:**
-  - `calcularTempoAtivo(): float` → calcula o tempo decorrido desde a aplicação.
+Cada módulo possui uma responsabilidade específica.
 
----
-
-#### **Treino**
-Contém as informações sobre o exercício físico que será realizado.
-
-- **Atributos:**
-  - `tipo: string` → tipo de treino (musculação, corrida, natação, etc).  
-  - `intensidade: string` → nível de intensidade (leve, moderado, intenso).
-
-- **Métodos:**
-  - `validarTipo(): bool` → valida se o tipo e intensidade são válidos.
+| Arquivo | Responsabilidade |
+|---|---|
+| `main.js` | Orquestra o fluxo principal |
+| `validators.js` | Validação dos inputs |
+| `format.js` | Normalização de números e horários |
+| `training.js` | Classificação de exercícios |
+| `evaluator.js` | Motor de regras clínicas |
+| `ui.js` | Renderização visual |
+| `evaluator.test.js` | Testes automatizados |
 
 ---
 
-#### **AvaliadorSeguranca**
-Classe principal responsável por avaliar se é seguro iniciar o treino.
+# Regras Clínicas
 
-- **Atributos:**
-  - `nivelSeguranca: string` → sinal gerado após a avaliação (verde, laranja ou vermelho).
+As regras clínicas oficiais do sistema estão documentadas em:
 
-- **Métodos:**
-  - `avaliar(glicemia: Glicemia, insulina: Insulina, treino: Treino): string`  
-    → processa os dados informados e determina o nível de segurança.  
-  - `exibirSinal(): void`  
-    → exibe o resultado final em forma de cor (verde, laranja ou vermelho).
+```txt
+docs/regras-clinicas.md
+```
 
----
-
-### Relacionamentos
-- A classe **AvaliadorSeguranca** *utiliza* as classes **Glicemia**, **Insulina** e **Treino** para processar as informações e calcular o resultado.  
-- As demais classes são independentes, mantendo **baixo acoplamento** e **alta coesão**.  
-- O modelo segue o paradigma de **orientação a objetos**, mesmo sem banco de dados, permitindo futura expansão para **versão mobile ou backend**.
+O documento define:
+- regras vermelhas;
+- regras laranja;
+- regras verdes;
+- prioridades;
+- exceções;
+- justificativas clínicas;
+- comportamento oficial do evaluator.
 
 ---
 
-## Diagrama de Sequência (UML)
+# Regras Implementadas Atualmente
 
-Representa a ordem de interação entre os objetos durante a execução do caso de uso “Avaliar Segurança do Treino”.
-
-![Diagrama de Sequência](docs/modelagem/diagramadesequenciadiabetesfit.png)
-
-### Descrição
-1. O **Usuário** informa os dados na **Interface**.  
-2. A Interface envia os dados ao **AvaliadorSeguranca**.  
-3. O Avaliador chama métodos de **Glicemia**, **Insulina** e **Treino** para validar as entradas.  
-4. O Avaliador processa e retorna o nível de segurança (verde, laranja ou vermelho).  
-5. A Interface exibe o resultado ao Usuário.
+## Vermelho
+- glicemia < 70 mg/dL;
+- insulina ativa > 5U recente;
+- glicemia ≥ 200 mg/dL;
+- glicemia > 180 mg/dL sem exceção segura.
 
 ---
 
-## Diagrama de Atividades (UML)
-
-Representa o fluxo de execução do processo de avaliação, incluindo as decisões condicionais e ações do sistema.
-
-![Diagrama de Atividades](docs/modelagem/diagramadeatividadediabetesfit.png)
-
-### Fluxo
-1. Início  
-2. Inserir dados (glicemia, insulina, treino)  
-3. Validar dados  
-4. Decisão: Dados válidos?  
-   - ❌ Não → Exibir erro e solicitar correção  
-   - ✅ Sim → Calcular nível de segurança  
-5. Exibir resultado  
-6. Fim  
+## Laranja
+- glicemia baixa em aeróbico;
+- exercício aeróbico com insulina muito recente;
+- glicemia < 100 com insulina recente em aeróbico;
+- glicemia 70–100 com insulina elevada recente.
 
 ---
 
-## Diagrama de Estados (UML)
-
-Representa os estados possíveis do objeto **AvaliadorSeguranca** e as transições entre eles ao longo do processo.
-
-![Diagrama de Estados](docs/modelagem/diagramadeestadosdiabetesfit.png)
-
-### Estados Principais
-- **Aguardando dados:** sistema inicializa e espera entrada do usuário.  
-- **Recebendo dados:** dados sendo inseridos.  
-- **Validando dados:** verifica consistência e intervalo de valores.  
-- **Calculando nível de segurança:** aplica regras de avaliação.  
-- **Exibindo resultado:** apresenta o sinal visual ao usuário.  
-
-### Transições
-- [dados válidos] → Calculando nível de segurança  
-- [dados inválidos] → Retorna para Aguardando dados  
+## Verde
+- fallback padrão quando nenhuma condição de risco é detectada.
 
 ---
 
-## Regras de Negócio (Em Refinamento)
+# Sistema de Prioridade
 
-Esta seção descreve as regras utilizadas pelo sistema para classificar o nível de segurança do treino.
+O evaluator utiliza prioridade sequencial:
 
-⚠️ **Importante:**  
-As regras abaixo ainda estão em processo de refinamento e validação clínica.  
-Podem sofrer ajustes conforme novos cenários são analisados.
+1. Regras vermelhas
+2. Regras laranja
+3. Verde (fallback)
 
----
-
-### 🔴 Regras de Nível Vermelho (Alto Risco)
-
-O sistema classifica como **vermelho (não iniciar o treino)** quando ocorre qualquer uma das condições abaixo:
-
-- Glicemia **abaixo de 70 mg/dL**
-- Glicemia **acima de 180 mg/dL**, exceto:
-  - Quando o exercício é aeróbico  
-  - E existe insulina ativa recente (≤ 120 minutos)
-- Insulina ativa **acima de 5U aplicada há menos de 2 horas**
+A primeira regra satisfeita encerra a avaliação.
 
 ---
 
-### 🟠 Regras de Nível Laranja (Atenção)
+# Testes Automatizados
 
-O sistema classifica como **laranja (atenção)** quando há risco moderado, incluindo:
+O projeto possui testes automatizados utilizando Vitest.
 
-- Glicemia entre **70 e 85 mg/dL** em exercícios aeróbicos  
-- Glicemia abaixo de **100 mg/dL com insulina recente** em exercícios aeróbicos  
-- Insulina aplicada **muito recentemente (≤ 15 minutos)** em exercícios aeróbicos com glicemia < 100  
-- Glicemia entre **70 e 100 mg/dL com insulina ativa elevada (>3U)** aplicada recentemente  
-
----
-
-### 🟢 Regra de Nível Verde (Seguro)
-
-O sistema classifica como **verde (treino liberado)** quando:
-
-- Nenhuma das condições de risco (vermelho ou laranja) é atendida
+## Cobertura atual
+- regras vermelhas;
+- regras laranja;
+- regras verdes;
+- exceções;
+- conflitos;
+- casos de fronteira.
 
 ---
 
-### 📌 Observações Importantes
-
-- O sistema utiliza uma abordagem baseada em **prioridade de risco**:
-  - 🔴 Vermelho → prioridade máxima  
-  - 🟠 Laranja → risco intermediário  
-  - 🟢 Verde → ausência de risco detectado  
-
-- As regras são aplicadas em ordem hierárquica:
-  1. Verificação de regras vermelhas  
-  2. Verificação de regras laranjas  
-  3. Caso nenhuma seja atendida → resultado verde  
-
-- A classificação do tipo de exercício (aeróbico ou não) influencia diretamente a avaliação.
+## Casos de fronteira testados
+- 70 mg/dL
+- 85 mg/dL
+- 100 mg/dL
+- 180 mg/dL
+- 200 mg/dL
+- 15 minutos
+- 120 minutos
 
 ---
 
-
-## Versão Atual
-**v0.4 – Início da Implementação (HTML/CSS concluídos + JS modular iniciado)**
-*Próxima etapa:* Finalizar a lógica de negócio no JavaScript e integrar avaliação + exibição.
+## Estado atual dos testes
+✅ 20 testes automatizados passando
 
 ---
 
-## Autor
-**Talles Alves** – Profissional de Educação Física e estudante de Engenharia de Software  
-📧 [GitHub](https://github.com/tallesalves) • [LinkedIn](https://www.linkedin.com/in/tallesalves/)
+# Modelagem UML
+
+O projeto possui modelagem UML completa:
+
+- Diagrama de Caso de Uso
+- Diagrama de Classes
+- Diagrama de Sequência
+- Diagrama de Atividades
+- Diagrama de Estados
+
+Localizados em:
+
+```txt
+docs/modelagem/
+```
+
+---
+
+# Conceitos de Engenharia de Software Aplicados
+
+- separação de responsabilidades;
+- modularização;
+- orientação a objetos;
+- baixo acoplamento;
+- alta coesão;
+- documentação técnica;
+- testes automatizados;
+- arquitetura escalável;
+- refatoração incremental;
+- desenvolvimento guiado por regras.
+
+---
+
+# Estado Atual do Projeto
+
+## Versão atual
+**v0.7 — MVP funcional com regras clínicas e testes automatizados**
+
+O sistema atualmente possui:
+- frontend funcional;
+- regras clínicas implementadas;
+- arquitetura modular;
+- testes automatizados;
+- documentação técnica;
+- UI moderna e responsiva.
+
+---
+
+# Próximas Evoluções
+
+## Regras clínicas
+- tendência glicêmica;
+- refeições pré-treino;
+- intensidade do exercício;
+- cetonas;
+- perfil individual do usuário.
+
+---
+
+## Arquitetura
+- engine configurável de regras;
+- score de risco;
+- múltiplos alertas simultâneos;
+- histórico local;
+- persistência futura.
+
+---
+
+## Interface
+- microinterações;
+- animações;
+- feedback em tempo real;
+- PWA/mobile app.
+
+---
+
+# Autor
+
+## Talles Alves
+Profissional de Educação Física e estudante de Engenharia de Software.
+
+- GitHub:
+https://github.com/tallesalves
+
+- LinkedIn:
+https://www.linkedin.com/in/tallesalves/
