@@ -112,3 +112,113 @@ describe("evaluateSafety", () => {
     expect(resultado.nivel).toBe("verde");
   });
 });
+
+it("70 mg/dL não deve ser vermelho", () => {
+  const resultado = evaluateSafety({
+    glicemia: 70,
+    insulinaAtiva: 0,
+    minutosDesdeAplicacao: 999,
+    tipoTreino: "musculacao",
+  });
+
+  expect(resultado.nivel).not.toBe("vermelho");
+});
+
+it("85 mg/dL em aeróbico deve ser laranja", () => {
+  const resultado = evaluateSafety({
+    glicemia: 85,
+    insulinaAtiva: 0,
+    minutosDesdeAplicacao: 999,
+    tipoTreino: "corrida",
+  });
+
+  expect(resultado.nivel).toBe("laranja");
+});
+
+it("86 mg/dL em aeróbico sem insulina não deve ser laranja", () => {
+  const resultado = evaluateSafety({
+    glicemia: 86,
+    insulinaAtiva: 0,
+    minutosDesdeAplicacao: 999,
+    tipoTreino: "corrida",
+  });
+
+  expect(resultado.nivel).not.toBe("laranja");
+});
+
+it("100 mg/dL com 2U em aeróbico não deve ativar regra >2U", () => {
+  const resultado = evaluateSafety({
+    glicemia: 100,
+    insulinaAtiva: 2,
+    minutosDesdeAplicacao: 60,
+    tipoTreino: "corrida",
+  });
+
+  expect(resultado.nivel).not.toBe("laranja");
+});
+
+it("180 mg/dL não deve ser vermelho", () => {
+  const resultado = evaluateSafety({
+    glicemia: 180,
+    insulinaAtiva: 0,
+    minutosDesdeAplicacao: 999,
+    tipoTreino: "musculacao",
+  });
+
+  expect(resultado.nivel).not.toBe("vermelho");
+});
+
+it("200 mg/dL deve ser vermelho absoluto", () => {
+  const resultado = evaluateSafety({
+    glicemia: 200,
+    insulinaAtiva: 2,
+    minutosDesdeAplicacao: 30,
+    tipoTreino: "corrida",
+  });
+
+  expect(resultado.nivel).toBe("vermelho");
+});
+
+it("120 minutos ainda conta como insulina recente", () => {
+  const resultado = evaluateSafety({
+    glicemia: 90,
+    insulinaAtiva: 4,
+    minutosDesdeAplicacao: 120,
+    tipoTreino: "musculacao",
+  });
+
+  expect(resultado.nivel).toBe("laranja");
+});
+
+it("121 minutos não deve contar como insulina recente", () => {
+  const resultado = evaluateSafety({
+    glicemia: 90,
+    insulinaAtiva: 4,
+    minutosDesdeAplicacao: 121,
+    tipoTreino: "musculacao",
+  });
+
+  expect(resultado.nivel).not.toBe("laranja");
+});
+
+it("15 minutos deve ativar regra de insulina muito recente", () => {
+  const resultado = evaluateSafety({
+    glicemia: 120,
+    insulinaAtiva: 1,
+    minutosDesdeAplicacao: 15,
+    tipoTreino: "corrida",
+  });
+
+  expect(resultado.nivel).toBe("laranja");
+});
+
+it("16 minutos não deve ativar regra de 15 minutos", () => {
+  const resultado = evaluateSafety({
+    glicemia: 120,
+    insulinaAtiva: 1,
+    minutosDesdeAplicacao: 16,
+    tipoTreino: "corrida",
+  });
+
+  expect(resultado.nivel).not.toBe("laranja");
+});
