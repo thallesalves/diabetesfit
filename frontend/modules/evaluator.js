@@ -23,29 +23,39 @@ const LIMITES = {
   INSULINA_MUITO_RECENTE_MIN: 15,
 };
 
-// 2) Função pública do módulo
+// 2) Ordem oficial das regras
+const redRules = [
+  checkHypoglycemia,
+  checkHighActiveInsulin,
+  checkAbsoluteHyperglycemia,
+  checkHyperglycemiaWithoutSafeException,
+];
+
+const orangeRules = [
+  checkLowGlucoseAerobic,
+  checkVeryRecentInsulinAerobic,
+  checkAerobicLowGlucoseWithRecentInsulin,
+  checkModerateInsulinWithLowGlucose,
+];
+
+// 3) Função pública do módulo
 export function evaluateSafety({
   glicemia,
   insulinaAtiva,
   minutosDesdeAplicacao,
   tipoTreino,
 }) {
-  const red = checkRedRules({
+  const input = {
     glicemia,
     insulinaAtiva,
     minutosDesdeAplicacao,
     tipoTreino,
-  });
+  };
 
+  const red = runRules(redRules, input);
   if (red) return red;
 
-  const orange = checkOrangeRules({
-    glicemia,
-    insulinaAtiva,
-    minutosDesdeAplicacao,
-    tipoTreino,
-  });
-
+  const orange = runRules(orangeRules, input);
   if (orange) return orange;
 
   return createGreenResult(
@@ -55,14 +65,22 @@ export function evaluateSafety({
   );
 }
 
-// 3) Regras Vermelhas
-function checkRedRules({
-  glicemia,
-  insulinaAtiva,
-  minutosDesdeAplicacao,
-  tipoTreino,
-}) {
-  // R001 — Hipoglicemia absoluta
+// 4) Executor genérico de regras
+function runRules(rules, input) {
+  for (const rule of rules) {
+    const result = rule(input);
+
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+// 5) Regras Vermelhas
+
+function checkHypoglycemia({ glicemia }) {
   if (glicemia < LIMITES.HIPO) {
     return createRedResult(
       "Não iniciar o treino",
@@ -74,7 +92,10 @@ function checkRedRules({
     );
   }
 
-  // R002 — Alta quantidade de insulina ativa recente
+  return null;
+}
+
+function checkHighActiveInsulin({ insulinaAtiva, minutosDesdeAplicacao }) {
   if (
     insulinaAtiva > LIMITES.INSULINA_ALTA &&
     minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN
@@ -89,8 +110,10 @@ function checkRedRules({
     );
   }
 
-  // R003 — Hiperglicemia absoluta
-  // Esta regra vem ANTES da exceção aeróbica.
+  return null;
+}
+
+function checkAbsoluteHyperglycemia({ glicemia }) {
   if (glicemia >= LIMITES.HIPER_ABSOLUTA) {
     return createRedResult(
       "Não iniciar o treino",
@@ -102,41 +125,41 @@ function checkRedRules({
     );
   }
 
-  // R004 — Hiperglicemia acima de 180 sem exceção segura
-  if (glicemia > LIMITES.HIPER) {
-    const temExcecaoAerobica =
-      isAerobic(tipoTreino) &&
-      insulinaAtiva > 0 &&
-      minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN;
-
-    if (!temExcecaoAerobica) {
-      return createRedResult(
-        "Não iniciar o treino",
-        ["Glicemia acima de 180 mg/dL."],
-        [
-          "Corrigir a glicemia antes do exercício.",
-          "Aguardar estabilização antes de treinar.",
-        ],
-      );
-    }
-  }
-
   return null;
 }
 
-// 4) Regras Laranja
-function checkOrangeRules({
+function checkHyperglycemiaWithoutSafeException({
   glicemia,
   insulinaAtiva,
   minutosDesdeAplicacao,
   tipoTreino,
 }) {
-  const insulinaRecente = minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN;
+  if (glicemia <= LIMITES.HIPER) {
+    return null;
+  }
 
-  const insulinaMuitoRecente =
-    minutosDesdeAplicacao <= LIMITES.INSULINA_MUITO_RECENTE_MIN;
+  const temExcecaoAerobica =
+    isAerobic(tipoTreino) &&
+    insulinaAtiva > 0 &&
+    minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN;
 
-  // R101 — Glicemia baixa para exercício aeróbico
+  if (temExcecaoAerobica) {
+    return null;
+  }
+
+  return createRedResult(
+    "Não iniciar o treino",
+    ["Glicemia acima de 180 mg/dL."],
+    [
+      "Corrigir a glicemia antes do exercício.",
+      "Aguardar estabilização antes de treinar.",
+    ],
+  );
+}
+
+// 6) Regras Laranja
+
+function checkLowGlucoseAerobic({ glicemia, tipoTreino }) {
   if (isAerobic(tipoTreino) && glicemia >= 70 && glicemia <= 85) {
     return createOrangeResult(
       "Atenção",
@@ -148,8 +171,19 @@ function checkOrangeRules({
     );
   }
 
-  // R102 — Insulina aplicada muito recentemente antes de exercício aeróbico
-  if (isAerobic(tipoTreino) && insulinaAtiva > 0 && insulinaMuitoRecente) {
+  return null;
+}
+
+function checkVeryRecentInsulinAerobic({
+  insulinaAtiva,
+  minutosDesdeAplicacao,
+  tipoTreino,
+}) {
+  if (
+    isAerobic(tipoTreino) &&
+    insulinaAtiva > 0 &&
+    minutosDesdeAplicacao <= LIMITES.INSULINA_MUITO_RECENTE_MIN
+  ) {
     return createOrangeResult(
       "Atenção",
       ["Insulina aplicada muito recentemente antes do exercício."],
@@ -160,7 +194,17 @@ function checkOrangeRules({
     );
   }
 
-  // R103 — Glicemia abaixo de 100 com insulina ativa recente em exercício aeróbico
+  return null;
+}
+
+function checkAerobicLowGlucoseWithRecentInsulin({
+  glicemia,
+  insulinaAtiva,
+  minutosDesdeAplicacao,
+  tipoTreino,
+}) {
+  const insulinaRecente = minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN;
+
   if (
     isAerobic(tipoTreino) &&
     glicemia < 100 &&
@@ -179,7 +223,16 @@ function checkOrangeRules({
     );
   }
 
-  // R104 — Glicemia baixa-normal com quantidade moderada de insulina recente
+  return null;
+}
+
+function checkModerateInsulinWithLowGlucose({
+  glicemia,
+  insulinaAtiva,
+  minutosDesdeAplicacao,
+}) {
+  const insulinaRecente = minutosDesdeAplicacao <= LIMITES.INSULINA_RECENTE_MIN;
+
   if (
     glicemia >= 70 &&
     glicemia <= 100 &&
