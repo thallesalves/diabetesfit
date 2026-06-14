@@ -3,11 +3,28 @@ import { normalizeNumber, minutesSince } from "./modules/format.js"; // funçõe
 import { validateInputs } from "./modules/validators.js"; // função de validação dos inputs do formulário
 import { evaluateSafety } from "./modules/evaluator.js"; // função que contém a lógica de avaliação da segurança do treino (ela recebe os dados normalizados e retorna um resultado com a avaliação)
 import { renderResult, renderErrors, hideResult } from "./modules/ui.js"; // funções de renderização (renderResult mostra o resultado da avaliação, renderErrors mostra os erros de validação e hideResult esconde a caixa de resultado)
+import { saveLastEvaluation, getLastEvaluation } from "./modules/storage.js";
 
 //Aguarda DOM carregado (garantia contra race conditions)
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formAvaliacao"); // captura o formulário (faço isso para poder capturar o evento de submit e prevenir o reload da página)
   const resultadoBox = document.getElementById("resultado"); // cria uma variável para a div de resultado
+  const lastEvaluation = getLastEvaluation(); // tenta recuperar a última avaliação salva no localStorage
+  
+  // Se houver uma avaliação salva, pré-preenche os campos do formulário com esses dados
+  if (lastEvaluation) {
+  document.getElementById("glicemia").value =
+    lastEvaluation.glicemiaStr;
+
+  document.getElementById("insulina").value =
+    lastEvaluation.insulinaStr;
+
+  document.getElementById("horarioInsulina").value =
+    lastEvaluation.horarioStr;
+
+  document.getElementById("treino").value =
+    lastEvaluation.tipoTreino;
+}
 
   //Captura evento de submit
   form.addEventListener("submit", (event) => {
@@ -18,10 +35,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const insulinaStr = document.getElementById("insulina").value;
     const horarioStr = document.getElementById("horarioInsulina").value;
     const tipoTreino = document.getElementById("treino").value;
+    saveLastEvaluation({
+      glicemiaStr,
+      insulinaStr,
+      horarioStr,
+      tipoTreino,
+    });
 
     //Validação
-    const validation = validateInputs({ glicemiaStr, insulinaStr, horarioStr, tipoTreino }); // 'validateInputs' retorna um objeto { valid: boolean, errors: string[] }. É uma função que criamos no arquivo 'validators.js' para validar os inputs do formulário.
-    if (!validation.valid) { 
+    const validation = validateInputs({
+      glicemiaStr,
+      insulinaStr,
+      horarioStr,
+      tipoTreino,
+    }); // 'validateInputs' retorna um objeto { valid: boolean, errors: string[] }. É uma função que criamos no arquivo 'validators.js' para validar os inputs do formulário.
+    if (!validation.valid) {
       hideResult(resultadoBox); // esconde o box de resultado antes de mostrar os erros
       renderErrors(resultadoBox, validation.errors); // mostra os erros na tela
       return; // sai da função de submit (não prossegue para avaliação)
@@ -29,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Normalização
     const glicemia = normalizeNumber(glicemiaStr); // normalizeNumber() troca vírgula por ponto e converte pra Number (ex: "1,5" → 1.5);
-    const insulina = normalizeNumber(insulinaStr);  // mesma coisa pra insulina
+    const insulina = normalizeNumber(insulinaStr); // mesma coisa pra insulina
     const minutosDesdeAplicacao = minutesSince(horarioStr); // minutesSince() transforma o horário "14:30" em quantos minutos se passaram desde então (ex: se são 15:30 → resultado será 60 minutos)
 
     //Avaliação
