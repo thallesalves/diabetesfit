@@ -60,7 +60,7 @@ export function evaluateSafety({
 
   return createGreenResult(
     "Treino liberado",
-    ["Nenhuma condição de risco detectada pelas regras atuais."],
+    ["Nenhuma condição de risco detectada."],
     ["Inicie o treino e monitore conforme sua rotina habitual."],
   );
 }
