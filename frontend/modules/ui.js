@@ -1,7 +1,9 @@
 // frontend/modules/ui.js
 
 // Renderiza resultados e erros na interface.
+//
 // Contrato do evaluator:
+//
 // {
 //   nivel: "verde" | "laranja" | "vermelho",
 //   titulo: string,
@@ -11,7 +13,9 @@
 
 export function hideResult(box) {
   box.classList.add("oculto");
+
   box.classList.remove("verde", "laranja", "vermelho", "erro");
+
   box.innerHTML = "";
 }
 
@@ -30,6 +34,7 @@ export function renderErrors(box, errors) {
             (error) => `
               <div class="resultado-item">
                 <span class="resultado-icon">!</span>
+
                 <p>${error}</p>
               </div>
             `,
@@ -89,28 +94,66 @@ export function renderHistory(historyList, history) {
       );
 
       historyItem.innerHTML = `
-        <p class="history-date">${evaluation.data}</p>
-
-        <h3>${evaluation.resultado}</h3>
-
-        <p>
-          <strong>Glicemia:</strong>
-          ${evaluation.glicemia} mg/dL
+        <p class="history-date">
+          ${evaluation.data}
         </p>
 
-        <p>
-          <strong>Insulina ativa:</strong>
-          ${evaluation.insulinaAtiva} U
-        </p>
+        <h3>
+          ${evaluation.resultado}
+        </h3>
 
-        <p>
-          <strong>Treino:</strong>
-          ${evaluation.tipoTreino}
-        </p>
+        <details class="history-details">
+          <summary>Ver detalhes</summary>
+
+          <div class="history-content">
+            <p>
+              <strong>Glicemia:</strong>
+              ${evaluation.glicemia} mg/dL
+            </p>
+
+            <p>
+              <strong>Insulina ativa:</strong>
+              ${evaluation.insulinaAtiva} U
+            </p>
+
+            <p>
+              <strong>Treino:</strong>
+              ${evaluation.tipoTreino}
+            </p>
+          </div>
+        </details>
       `;
 
       historyList.appendChild(historyItem);
     });
+}
+
+export function renderStatistics(statisticsSection, statistics) {
+  statisticsSection.innerHTML = `
+    <h2>Resumo das avaliações</h2>
+
+    <div class="statistics-card">
+      <p>
+        <strong>Total de avaliações:</strong>
+        ${statistics.total}
+      </p>
+
+      <p>
+        🟢 Liberado:
+        ${statistics.percentualVerde}%
+      </p>
+
+      <p>
+        🟠 Atenção:
+        ${statistics.percentualLaranja}%
+      </p>
+
+      <p>
+        🔴 Não iniciar:
+        ${statistics.percentualVermelho}%
+      </p>
+    </div>
+  `;
 }
 
 function createList(title, items, type) {
@@ -126,7 +169,9 @@ function createList(title, items, type) {
         ${items
           .map(
             (item) => `
-              <div class="resultado-item resultado-item-${type}">
+              <div
+                class="resultado-item resultado-item-${type}"
+              >
                 <span class="resultado-icon">
                   ${type === "motivo" ? "!" : "✓"}
                 </span>

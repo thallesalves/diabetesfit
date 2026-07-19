@@ -6,11 +6,14 @@ import { validateInputs } from "./modules/validators.js";
 
 import { evaluateSafety } from "./modules/evaluator.js";
 
+import { calculateStatistics } from "./modules/statistics.js";
+
 import {
   renderResult,
   renderErrors,
   hideResult,
   renderHistory,
+  renderStatistics,
 } from "./modules/ui.js";
 
 import {
@@ -18,18 +21,32 @@ import {
   getLastEvaluation,
   saveHistory,
   getHistory,
+  clearHistory,
 } from "./modules/storage.js";
 
-// Aguarda o DOM carregar completamente
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formAvaliacao");
+
   const resultadoBox = document.getElementById("resultado");
+
   const historyList = document.getElementById("historyList");
 
-  // Recupera a última avaliação salva
+  const clearHistoryButton = document.getElementById("clearHistoryButton");
+
+  const statisticsSection = document.getElementById("statisticsSection");
+
+  function updateHistoryInterface() {
+    const history = getHistory();
+
+    renderHistory(historyList, history);
+
+    const statistics = calculateStatistics(history);
+
+    renderStatistics(statisticsSection, statistics);
+  }
+
   const lastEvaluation = getLastEvaluation();
 
-  // Preenche o formulário com os últimos dados salvos
   if (lastEvaluation) {
     document.getElementById("glicemia").value = lastEvaluation.glicemiaStr;
 
@@ -41,13 +58,25 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("treino").value = lastEvaluation.tipoTreino;
   }
 
-  // Busca e mostra o histórico ao abrir a página
-  renderHistory(historyList, getHistory());
+  updateHistoryInterface();
+
+  clearHistoryButton.addEventListener("click", () => {
+    const confirmClear = confirm(
+      "Deseja realmente apagar todo o histórico de avaliações?",
+    );
+
+    if (!confirmClear) {
+      return;
+    }
+
+    clearHistory();
+
+    updateHistoryInterface();
+  });
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    // Coleta os valores digitados no formulário
     const glicemiaStr = document.getElementById("glicemia").value;
 
     const insulinaStr = document.getElementById("insulina").value;
@@ -56,8 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tipoTreino = document.getElementById("treino").value;
 
-    // Salva os dados para preencher o formulário novamente
-    // quando a página for recarregada
     saveLastEvaluation({
       glicemiaStr,
       insulinaStr,
@@ -65,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
       tipoTreino,
     });
 
-    // Valida os valores antes de realizar a avaliação
     const validation = validateInputs({
       glicemiaStr,
       insulinaStr,
@@ -75,17 +101,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!validation.valid) {
       hideResult(resultadoBox);
+
       renderErrors(resultadoBox, validation.errors);
 
       return;
     }
 
-    // Converte os textos válidos para os formatos necessários
     const glicemia = normalizeNumber(glicemiaStr);
+
     const insulina = normalizeNumber(insulinaStr);
+
     const minutosDesdeAplicacao = minutesSince(horarioStr);
 
-    // Executa as regras de avaliação
     const resultado = evaluateSafety({
       glicemia,
       insulinaAtiva: insulina,
@@ -93,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
       tipoTreino,
     });
 
-    // Salva a nova avaliação no histórico
     saveHistory({
       data: new Date().toLocaleString("pt-BR"),
       glicemia,
@@ -103,11 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
       nivel: resultado.nivel,
     });
 
-    // Busca novamente o histórico atualizado
-    // e o renderiza na tela
-    renderHistory(historyList, getHistory());
+    updateHistoryInterface();
 
-    // Mostra o resultado atual
     renderResult(resultadoBox, resultado);
   });
 });

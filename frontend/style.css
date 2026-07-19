@@ -490,3 +490,224 @@ footer {
     font-size: 1.65rem;
   }
 }
+
+/* ==========================
+   Histórico de avaliações
+========================== */
+
+/* =========================================
+   18) HISTÓRICO DE AVALIAÇÕES
+========================================= */
+
+#historySection {
+  margin-top: 2rem;
+}
+
+#historySection h2 {
+  margin: 0 0 1rem;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  color: #1f2937;
+}
+
+/* Caixa fixa com rolagem */
+
+#historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+
+  max-height: 420px;
+  overflow-y: auto;
+
+  padding-right: 0.35rem;
+}
+
+/* Scrollbar */
+
+#historyList::-webkit-scrollbar {
+  width: 8px;
+}
+
+#historyList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#historyList::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+#historyList::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Card */
+
+.history-item {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-left: 6px solid #cbd5e1;
+
+  border-radius: 18px;
+
+  padding: 1rem 1.2rem;
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.05),
+    0 2px 6px rgba(15, 23, 42, 0.04);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.history-item:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 30px rgba(15, 23, 42, .08),
+    0 4px 10px rgba(15, 23, 42, .05);
+}
+
+/* Data */
+
+.history-date {
+  margin: 0 0 .8rem;
+
+  font-size: .82rem;
+
+  color: #94a3b8;
+
+  letter-spacing: .02em;
+}
+
+/* Título */
+
+.history-item h3 {
+  margin: 0 0 1rem;
+
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* Informações */
+
+.history-item p {
+  margin: .45rem 0;
+
+  font-size: .95rem;
+  color: #475569;
+}
+
+.history-item strong {
+  display: inline-block;
+  width: 120px;
+
+  color: #1e293b;
+}
+
+/* =========================================
+   Cores dos resultados
+========================================= */
+
+.history-item-verde {
+  border-left-color: #16a34a;
+}
+
+.history-item-verde h3 {
+  color: #15803d;
+}
+
+.history-item-laranja {
+  border-left-color: #f59e0b;
+}
+
+.history-item-laranja h3 {
+  color: #d97706;
+}
+
+.history-item-vermelho {
+  border-left-color: #ef4444;
+}
+
+.history-item-vermelho h3 {
+  color: #dc2626;
+}
+
+/* Histórico vazio */
+
+#historyList > p {
+  margin: 0;
+
+  padding: 2rem;
+
+  text-align: center;
+
+  color: #64748b;
+
+  background: #ffffff;
+
+  border: 1px dashed #cbd5e1;
+
+  border-radius: 18px;
+}
+
+/* =========================================
+   19) CONTROLES DO HISTÓRICO
+========================================= */
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.history-header h2 {
+  margin: 0;
+}
+
+.clear-history-button {
+  margin: 0;
+
+  padding: 0.65rem 0.9rem;
+
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+
+  background: #fff;
+  color: #dc2626;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  box-shadow: none;
+}
+
+.clear-history-button:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  box-shadow: none;
+  opacity: 1;
+}
+
+.clear-history-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+  .history-header {
+    align-items: flex-start;
+  }
+
+  .clear-history-button {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
