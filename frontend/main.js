@@ -1,40 +1,63 @@
 // frontend/main.js
-import { normalizeNumber, minutesSince } from "./modules/format.js"; // funções de formatação (normalização de número e cálculo de minutos desde um horário)
-import { validateInputs } from "./modules/validators.js"; // função de validação dos inputs do formulário
-import { evaluateSafety } from "./modules/evaluator.js"; // função que contém a lógica de avaliação da segurança do treino (ela recebe os dados normalizados e retorna um resultado com a avaliação)
-import { renderResult, renderErrors, hideResult } from "./modules/ui.js"; // funções de renderização (renderResult mostra o resultado da avaliação, renderErrors mostra os erros de validação e hideResult esconde a caixa de resultado)
-import { saveLastEvaluation, getLastEvaluation } from "./modules/storage.js";
 
-//Aguarda DOM carregado (garantia contra race conditions)
+import { normalizeNumber, minutesSince } from "./modules/format.js";
+
+import { validateInputs } from "./modules/validators.js";
+
+import { evaluateSafety } from "./modules/evaluator.js";
+
+import {
+  renderResult,
+  renderErrors,
+  hideResult,
+  renderHistory,
+} from "./modules/ui.js";
+
+import {
+  saveLastEvaluation,
+  getLastEvaluation,
+  saveHistory,
+  getHistory,
+} from "./modules/storage.js";
+
+// Aguarda o DOM carregar completamente
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formAvaliacao"); // captura o formulário (faço isso para poder capturar o evento de submit e prevenir o reload da página)
-  const resultadoBox = document.getElementById("resultado"); // cria uma variável para a div de resultado
-  const lastEvaluation = getLastEvaluation(); // tenta recuperar a última avaliação salva no localStorage
-  
-  // Se houver uma avaliação salva, pré-preenche os campos do formulário com esses dados
+  const form = document.getElementById("formAvaliacao");
+  const resultadoBox = document.getElementById("resultado");
+  const historyList = document.getElementById("historyList");
+
+  // Recupera a última avaliação salva
+  const lastEvaluation = getLastEvaluation();
+
+  // Preenche o formulário com os últimos dados salvos
   if (lastEvaluation) {
-  document.getElementById("glicemia").value =
-    lastEvaluation.glicemiaStr;
+    document.getElementById("glicemia").value = lastEvaluation.glicemiaStr;
 
-  document.getElementById("insulina").value =
-    lastEvaluation.insulinaStr;
+    document.getElementById("insulina").value = lastEvaluation.insulinaStr;
 
-  document.getElementById("horarioInsulina").value =
-    lastEvaluation.horarioStr;
+    document.getElementById("horarioInsulina").value =
+      lastEvaluation.horarioStr;
 
-  document.getElementById("treino").value =
-    lastEvaluation.tipoTreino;
-}
+    document.getElementById("treino").value = lastEvaluation.tipoTreino;
+  }
 
-  //Captura evento de submit
+  // Busca e mostra o histórico ao abrir a página
+  renderHistory(historyList, getHistory());
+
   form.addEventListener("submit", (event) => {
-    event.preventDefault(); //Você está dizendo: Quando o usuário clicar no botão de enviar (submit), não recarregue a página.”. 'preventDefault()' bloqueia o comportamento padrão do formulário (que seria atualizar a página).
+    event.preventDefault();
 
-    //Coleta os valores do formulário
+    // Coleta os valores digitados no formulário
     const glicemiaStr = document.getElementById("glicemia").value;
+
     const insulinaStr = document.getElementById("insulina").value;
+
     const horarioStr = document.getElementById("horarioInsulina").value;
+
     const tipoTreino = document.getElementById("treino").value;
+
+    // Salva os dados para preencher o formulário novamente
+    // quando a página for recarregada
     saveLastEvaluation({
       glicemiaStr,
       insulinaStr,
@@ -42,25 +65,27 @@ document.addEventListener("DOMContentLoaded", () => {
       tipoTreino,
     });
 
-    //Validação
+    // Valida os valores antes de realizar a avaliação
     const validation = validateInputs({
       glicemiaStr,
       insulinaStr,
       horarioStr,
       tipoTreino,
-    }); // 'validateInputs' retorna um objeto { valid: boolean, errors: string[] }. É uma função que criamos no arquivo 'validators.js' para validar os inputs do formulário.
+    });
+
     if (!validation.valid) {
-      hideResult(resultadoBox); // esconde o box de resultado antes de mostrar os erros
-      renderErrors(resultadoBox, validation.errors); // mostra os erros na tela
-      return; // sai da função de submit (não prossegue para avaliação)
+      hideResult(resultadoBox);
+      renderErrors(resultadoBox, validation.errors);
+
+      return;
     }
 
-    //Normalização
-    const glicemia = normalizeNumber(glicemiaStr); // normalizeNumber() troca vírgula por ponto e converte pra Number (ex: "1,5" → 1.5);
-    const insulina = normalizeNumber(insulinaStr); // mesma coisa pra insulina
-    const minutosDesdeAplicacao = minutesSince(horarioStr); // minutesSince() transforma o horário "14:30" em quantos minutos se passaram desde então (ex: se são 15:30 → resultado será 60 minutos)
+    // Converte os textos válidos para os formatos necessários
+    const glicemia = normalizeNumber(glicemiaStr);
+    const insulina = normalizeNumber(insulinaStr);
+    const minutosDesdeAplicacao = minutesSince(horarioStr);
 
-    //Avaliação
+    // Executa as regras de avaliação
     const resultado = evaluateSafety({
       glicemia,
       insulinaAtiva: insulina,
@@ -68,7 +93,21 @@ document.addEventListener("DOMContentLoaded", () => {
       tipoTreino,
     });
 
-    //Renderização final
+    // Salva a nova avaliação no histórico
+    saveHistory({
+      data: new Date().toLocaleString("pt-BR"),
+      glicemia,
+      insulinaAtiva: insulina,
+      tipoTreino,
+      resultado: resultado.titulo,
+      nivel: resultado.nivel,
+    });
+
+    // Busca novamente o histórico atualizado
+    // e o renderiza na tela
+    renderHistory(historyList, getHistory());
+
+    // Mostra o resultado atual
     renderResult(resultadoBox, resultado);
   });
 });

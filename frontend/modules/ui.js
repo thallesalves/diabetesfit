@@ -1,8 +1,13 @@
-// modules/ui.js
-// Renderiza resultados e erros na UI de acordo com o contrato do evaluator:
-// { nivel: "verde"|"laranja"|"vermelho", titulo: string, motivos: string[], acoes: string[] }
+// frontend/modules/ui.js
 
-// modules/ui.js
+// Renderiza resultados e erros na interface.
+// Contrato do evaluator:
+// {
+//   nivel: "verde" | "laranja" | "vermelho",
+//   titulo: string,
+//   motivos: string[],
+//   acoes: string[]
+// }
 
 export function hideResult(box) {
   box.classList.add("oculto");
@@ -11,12 +16,7 @@ export function hideResult(box) {
 }
 
 export function renderErrors(box, errors) {
-  box.classList.remove(
-    "oculto",
-    "verde",
-    "laranja",
-    "vermelho"
-  );
+  box.classList.remove("oculto", "verde", "laranja", "vermelho");
 
   box.classList.add("erro");
 
@@ -32,7 +32,7 @@ export function renderErrors(box, errors) {
                 <span class="resultado-icon">!</span>
                 <p>${error}</p>
               </div>
-            `
+            `,
           )
           .join("")}
       </div>
@@ -42,34 +42,18 @@ export function renderErrors(box, errors) {
 
 export function renderResult(box, result) {
   if (!result || !result.nivel) {
-    renderErrors(box, [
-      "Resultado inválido retornado pelo avaliador."
-    ]);
+    renderErrors(box, ["Resultado inválido retornado pelo avaliador."]);
 
     return;
   }
 
-  box.classList.remove(
-    "oculto",
-    "erro",
-    "verde",
-    "laranja",
-    "vermelho"
-  );
+  box.classList.remove("oculto", "erro", "verde", "laranja", "vermelho");
 
   box.classList.add(result.nivel);
 
-  const motivosHtml = createList(
-    "Motivos",
-    result.motivos,
-    "motivo"
-  );
+  const motivosHtml = createList("Motivos", result.motivos, "motivo");
 
-  const acoesHtml = createList(
-    "Ações recomendadas",
-    result.acoes,
-    "acao"
-  );
+  const acoesHtml = createList("Ações recomendadas", result.acoes, "acao");
 
   box.innerHTML = `
     <article class="resultado-card">
@@ -80,6 +64,53 @@ export function renderResult(box, result) {
       ${acoesHtml}
     </article>
   `;
+}
+
+export function renderHistory(historyList, history) {
+  if (history.length === 0) {
+    historyList.innerHTML = `
+      <p>Nenhuma avaliação realizada.</p>
+    `;
+
+    return;
+  }
+
+  historyList.innerHTML = "";
+
+  history
+    .slice()
+    .reverse()
+    .forEach((evaluation) => {
+      const historyItem = document.createElement("article");
+
+      historyItem.classList.add(
+        "history-item",
+        `history-item-${evaluation.nivel}`,
+      );
+
+      historyItem.innerHTML = `
+        <p class="history-date">${evaluation.data}</p>
+
+        <h3>${evaluation.resultado}</h3>
+
+        <p>
+          <strong>Glicemia:</strong>
+          ${evaluation.glicemia} mg/dL
+        </p>
+
+        <p>
+          <strong>Insulina ativa:</strong>
+          ${evaluation.insulinaAtiva} U
+        </p>
+
+        <p>
+          <strong>Treino:</strong>
+          ${evaluation.tipoTreino}
+        </p>
+      `;
+
+      historyList.appendChild(historyItem);
+    });
 }
 
 function createList(title, items, type) {
@@ -102,7 +133,7 @@ function createList(title, items, type) {
 
                 <p>${item}</p>
               </div>
-            `
+            `,
           )
           .join("")}
       </div>
