@@ -1,75 +1,129 @@
-# DiabetesFit — Avaliador de Segurança para Exercício e Diabetes
+# 🩺 DiabetesFit
 
-## Visão Geral
+> **Uma aplicação web desenvolvida para apoiar a tomada de decisão antes do exercício físico em pessoas com diabetes, utilizando regras clínicas implementadas em JavaScript.**
 
-O **DiabetesFit** é um aplicativo web desenvolvido para avaliar, de forma simples e rápida, se é seguro iniciar um treino com base em fatores glicêmicos e no contexto da insulina ativa.
+<p align="center">
 
-O sistema funciona como uma calculadora inteligente de segurança para exercício físico em pessoas com diabetes.
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/JavaScript-ES2023-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white">
+<img src="https://img.shields.io/badge/Responsive-✔-22c55e?style=for-the-badge">
+<img src="https://img.shields.io/badge/20_Testes-Passando-success?style=for-the-badge">
+<img src="https://img.shields.io/badge/MVP-Concluído-2563EB?style=for-the-badge">
 
-O usuário informa:
-- glicemia pré-treino;
-- quantidade de insulina rápida ativa;
-- horário da última aplicação;
-- tipo de exercício.
-
-Com base nessas informações, o sistema retorna um nível de segurança:
-
-🟢 Verde → treino liberado  
-🟠 Laranja → atenção / risco moderado  
-🔴 Vermelho → não recomendado iniciar o treino  
+</p>
 
 ---
 
-# Objetivos do Projeto
+# 📖 Sobre o projeto
 
-O projeto foi criado com foco em:
-- aprendizado prático de Engenharia de Software;
-- arquitetura frontend modular;
-- modelagem UML;
-- implementação de regras de negócio reais;
-- testes automatizados;
-- construção incremental de software.
+O **DiabetesFit** é uma aplicação web desenvolvida para aplicar conceitos de Engenharia de Software na resolução de um problema real da área da saúde.
 
----
+Seu objetivo é auxiliar pessoas com diabetes na decisão sobre iniciar ou não um exercício físico, considerando fatores relacionados à glicemia, insulina ativa e tipo de exercício.
 
-# Funcionalidades Implementadas
+A aplicação funciona como uma **calculadora inteligente de segurança pré-treino**, aplicando regras clínicas para fornecer recomendações simples, objetivas e fáceis de interpretar.
 
-## Avaliação clínica
-- cálculo automático do nível de segurança;
-- regras clínicas organizadas por prioridade;
-- diferenciação entre exercícios aeróbicos e não aeróbicos;
-- tratamento de exceções clínicas.
+Além da avaliação, o sistema registra o histórico das análises realizadas e apresenta estatísticas resumidas para facilitar o acompanhamento dos resultados.
 
 ---
 
-## Interface
-- formulário responsivo;
-- feedback visual moderno;
-- cards contextuais por nível de risco;
-- renderização dinâmica via JavaScript.
+# ✨ Funcionalidades
+
+## 🩺 Avaliação Clínica
+
+- Avaliação automática baseada em regras clínicas.
+- Diferenciação entre exercícios aeróbicos e não aeróbicos.
+- Priorização dos níveis de risco.
+- Tratamento de exceções clínicas.
+- Explicação do resultado apresentado.
 
 ---
 
-## Arquitetura
-- ES Modules;
-- separação de responsabilidades;
-- módulos independentes;
-- baixo acoplamento;
-- alta coesão.
+## 📊 Histórico e Estatísticas
+
+- Histórico persistente das avaliações.
+- Armazenamento das últimas 20 avaliações.
+- Estatísticas em tempo real.
+- Percentual de avaliações por categoria.
+- Barras de progresso.
+- Restauração automática da última avaliação.
 
 ---
 
-## Testes Automatizados
-- Vitest configurado;
-- testes unitários do evaluator;
-- testes de casos de fronteira;
-- testes de regressão clínica.
+## 🎨 Interface
+
+- Interface moderna e responsiva.
+- Feedback visual por níveis de risco.
+- Histórico expansível.
+- Microinterações.
+- Animações suaves.
 
 ---
 
-# Estrutura do Projeto
+## ✅ Qualidade do Código
 
-```txt
+- Arquitetura modular.
+- Separação de responsabilidades.
+- Código reutilizável.
+- Testes automatizados.
+- Fácil manutenção e expansão.
+
+---
+
+# 🛠️ Tecnologias
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript (ES Modules)
+
+### Persistência
+
+- LocalStorage
+
+### Testes
+
+- Vitest
+
+### Ferramentas
+
+- Git
+- GitHub
+- Visual Studio Code
+- Visual Paradigm
+
+---
+
+# 🏛️ Arquitetura da Solução
+
+A aplicação foi desenvolvida utilizando uma arquitetura modular baseada em responsabilidades.
+
+```text
+                Usuário
+                    │
+                    ▼
+             main.js (Controller)
+                    │
+     ┌──────────────┼──────────────┐
+     ▼              ▼              ▼
+validators     evaluator      storage
+                                   │
+                                   ▼
+                              statistics
+                                   │
+                                   ▼
+                                   ui
+```
+
+Cada módulo possui apenas uma responsabilidade, reduzindo o acoplamento e facilitando a manutenção do sistema.
+
+---
+
+# 📁 Estrutura do Projeto
+
+```text
 diabetesfit/
 │
 ├── frontend/
@@ -80,6 +134,9 @@ diabetesfit/
 │   └── modules/
 │       ├── evaluator.js
 │       ├── format.js
+│       ├── resultFactory.js
+│       ├── statistics.js
+│       ├── storage.js
 │       ├── training.js
 │       ├── ui.js
 │       └── validators.js
@@ -89,13 +146,7 @@ diabetesfit/
 │
 ├── docs/
 │   ├── regras-clinicas.md
-│   │
 │   └── modelagem/
-│       ├── diagramacasousodiabetesfit.png
-│       ├── diagramadeclassesdiabetesfit.png
-│       ├── diagramadesequenciadiabetesfit.png
-│       ├── diagramadeatividadediabetesfit.png
-│       └── diagramadeestadosdiabetesfit.png
 │
 ├── package.json
 ├── package-lock.json
@@ -104,209 +155,174 @@ diabetesfit/
 
 ---
 
-# Tecnologias Utilizadas
+# 💡 Decisões de Projeto
 
-## Frontend
-- HTML5
-- CSS3
-- JavaScript ES Modules
+Durante o desenvolvimento foram adotadas decisões arquiteturais para tornar o projeto organizado, escalável e de fácil manutenção.
 
-## Testes
-- Vitest
+### ES Modules
 
-## Ferramentas
-- VSCode
-- Git
-- GitHub
-- Visual Paradigm
+O código foi dividido em módulos independentes, facilitando a reutilização e a manutenção.
 
----
+### Separação de responsabilidades
 
-# Arquitetura da Aplicação
-
-O projeto segue uma arquitetura modular.
-
-Cada módulo possui uma responsabilidade específica.
+Cada módulo possui uma única responsabilidade.
 
 | Arquivo | Responsabilidade |
-|---|---|
-| `main.js` | Orquestra o fluxo principal |
-| `validators.js` | Validação dos inputs |
-| `format.js` | Normalização de números e horários |
-| `training.js` | Classificação de exercícios |
+|----------|------------------|
+| `main.js` | Coordena toda a aplicação |
 | `evaluator.js` | Motor de regras clínicas |
-| `ui.js` | Renderização visual |
-| `evaluator.test.js` | Testes automatizados |
+| `validators.js` | Validação dos dados |
+| `format.js` | Conversões e normalização |
+| `training.js` | Classificação dos exercícios |
+| `storage.js` | Persistência em LocalStorage |
+| `statistics.js` | Estatísticas das avaliações |
+| `resultFactory.js` | Padronização dos resultados |
+| `ui.js` | Renderização da interface |
+
+### LocalStorage
+
+Foi utilizado para persistir:
+
+- Histórico das avaliações;
+- Última avaliação realizada.
+
+Sem necessidade de backend.
+
+### HTML semântico
+
+O histórico utiliza o elemento `<details>` para expandir informações, reduzindo JavaScript desnecessário e melhorando a acessibilidade.
+
+### Atualização centralizada da interface
+
+Toda atualização do histórico e das estatísticas acontece através da função `updateHistoryInterface()`, reduzindo duplicação de código.
 
 ---
 
-# Regras Clínicas
+# 🧪 Testes
 
-As regras clínicas oficiais do sistema estão documentadas em:
+O projeto utiliza **Vitest** para validar as regras clínicas implementadas.
 
-```txt
-docs/regras-clinicas.md
-```
+Atualmente possui:
 
-O documento define:
-- regras vermelhas;
-- regras laranja;
-- regras verdes;
-- prioridades;
-- exceções;
-- justificativas clínicas;
-- comportamento oficial do evaluator.
+- ✅ 20 testes automatizados;
+- Casos de fronteira;
+- Regras de prioridade;
+- Testes de regressão;
+- Exceções clínicas;
+- Cenários de conflito.
 
----
+Para executar:
 
-# Regras Implementadas Atualmente
-
-## Vermelho
-- glicemia < 70 mg/dL;
-- insulina ativa > 5U recente;
-- glicemia ≥ 200 mg/dL;
-- glicemia > 180 mg/dL sem exceção segura.
-
----
-
-## Laranja
-- glicemia baixa em aeróbico;
-- exercício aeróbico com insulina muito recente;
-- glicemia < 100 com insulina recente em aeróbico;
-- glicemia 70–100 com insulina elevada recente.
-
----
-
-## Verde
-- fallback padrão quando nenhuma condição de risco é detectada.
-
----
-
-# Sistema de Prioridade
-
-O evaluator utiliza prioridade sequencial:
-
-1. Regras vermelhas
-2. Regras laranja
-3. Verde (fallback)
-
-A primeira regra satisfeita encerra a avaliação.
-
----
-
-# Testes Automatizados
-
-O projeto possui testes automatizados utilizando Vitest.
-
-## Cobertura atual
-- regras vermelhas;
-- regras laranja;
-- regras verdes;
-- exceções;
-- conflitos;
-- casos de fronteira.
-
----
-
-## Casos de fronteira testados
-- 70 mg/dL
-- 85 mg/dL
-- 100 mg/dL
-- 180 mg/dL
-- 200 mg/dL
-- 15 minutos
-- 120 minutos
-
----
-
-## Estado atual dos testes
-✅ 20 testes automatizados passando
-
----
-
-# Modelagem UML
-
-O projeto possui modelagem UML completa:
-
-- Diagrama de Caso de Uso
-- Diagrama de Classes
-- Diagrama de Sequência
-- Diagrama de Atividades
-- Diagrama de Estados
-
-Localizados em:
-
-```txt
-docs/modelagem/
+```bash
+npm test
 ```
 
 ---
 
-# Conceitos de Engenharia de Software Aplicados
+# 🚀 Como executar
 
-- separação de responsabilidades;
-- modularização;
-- orientação a objetos;
-- baixo acoplamento;
-- alta coesão;
-- documentação técnica;
-- testes automatizados;
-- arquitetura escalável;
-- refatoração incremental;
-- desenvolvimento guiado por regras.
+Clone o repositório:
 
----
+```bash
+git clone https://github.com/tallesalves/diabetesfit.git
+```
 
-# Estado Atual do Projeto
+Entre na pasta:
 
-## Versão atual
-**v0.7 — MVP funcional com regras clínicas e testes automatizados**
+```bash
+cd diabetesfit
+```
 
-O sistema atualmente possui:
-- frontend funcional;
-- regras clínicas implementadas;
-- arquitetura modular;
-- testes automatizados;
-- documentação técnica;
-- UI moderna e responsiva.
+Instale as dependências:
 
----
+```bash
+npm install
+```
 
-# Próximas Evoluções
+Execute os testes:
 
-## Regras clínicas
-- tendência glicêmica;
-- refeições pré-treino;
-- intensidade do exercício;
-- cetonas;
-- perfil individual do usuário.
+```bash
+npm test
+```
+
+Abra o arquivo:
+
+```text
+frontend/index.html
+```
+
+em qualquer navegador moderno.
 
 ---
 
-## Arquitetura
-- engine configurável de regras;
-- score de risco;
-- múltiplos alertas simultâneos;
-- histórico local;
-- persistência futura.
+# 📚 Documentação
+
+O projeto possui documentação complementar em `docs/`, incluindo:
+
+- Regras clínicas;
+- Diagrama de Caso de Uso;
+- Diagrama de Classes;
+- Diagrama de Sequência;
+- Diagrama de Atividades;
+- Diagrama de Estados.
 
 ---
 
-## Interface
-- microinterações;
-- animações;
-- feedback em tempo real;
-- PWA/mobile app.
+# 🎓 Aprendizados
+
+Este projeto foi desenvolvido para consolidar conhecimentos em Engenharia de Software através da construção de uma aplicação completa baseada em um problema real da área da saúde.
+
+Durante seu desenvolvimento foram aplicados conceitos de:
+
+- Arquitetura modular;
+- Separação de responsabilidades;
+- HTML semântico;
+- CSS responsivo;
+- JavaScript moderno (ES Modules);
+- Organização de código;
+- Testes automatizados;
+- Refatoração incremental;
+- Modelagem UML;
+- Desenvolvimento orientado por regras de negócio;
+- Documentação técnica.
 
 ---
 
-# Autor
+# 🛣️ Roadmap
+
+Próximas evoluções planejadas:
+
+- Tendência glicêmica;
+- Intensidade do exercício;
+- Refeição pré-treino;
+- Perfil individual do usuário;
+- Cetonas;
+- Engine configurável de regras;
+- Progressive Web App (PWA);
+- Backend para autenticação;
+- Persistência em banco de dados.
+
+---
+
+# 📄 Licença
+
+Este projeto está licenciado sob a licença **MIT**.
+
+---
+
+# 👨‍💻 Autor
 
 ## Talles Alves
-Profissional de Educação Física e estudante de Engenharia de Software.
 
-- GitHub:
-https://github.com/tallesalves
+Profissional de Educação Física especializado em exercício para pessoas com diabetes e estudante de Engenharia de Software.
 
-- LinkedIn:
-https://www.linkedin.com/in/tallesalves/
+- **GitHub:** https://github.com/tallesalves
+- **LinkedIn:** https://www.linkedin.com/in/tallesalves
+
+---
+
+<p align ="center">
+
+Desenvolvido para aplicar conceitos de Engenharia de Software na construção de uma solução web voltada à segurança do exercício físico para pessoas com diabetes.
+
+</p>

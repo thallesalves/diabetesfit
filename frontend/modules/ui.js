@@ -129,30 +129,117 @@ export function renderHistory(historyList, history) {
 }
 
 export function renderStatistics(statisticsSection, statistics) {
+  if (statistics.total === 0) {
+    statisticsSection.innerHTML = `
+      <section class="statistics-card statistics-empty">
+        <h2>Resumo das avaliações</h2>
+
+        <p>
+          As estatísticas aparecerão depois da primeira avaliação.
+        </p>
+      </section>
+    `;
+
+    return;
+  }
+
   statisticsSection.innerHTML = `
-    <h2>Resumo das avaliações</h2>
+    <section class="statistics-card">
+      <div class="statistics-header">
+        <div>
+          <p class="statistics-label">
+            Resumo
+          </p>
 
-    <div class="statistics-card">
-      <p>
-        <strong>Total de avaliações:</strong>
-        ${statistics.total}
-      </p>
+          <h2>Últimas avaliações</h2>
+        </div>
 
-      <p>
-        🟢 Liberado:
-        ${statistics.percentualVerde}%
-      </p>
+        <div class="statistics-total">
+          <strong>${statistics.total}</strong>
 
-      <p>
-        🟠 Atenção:
-        ${statistics.percentualLaranja}%
-      </p>
+          <span>
+            ${statistics.total === 1 ? "avaliação" : "avaliações"}
+          </span>
+        </div>
+      </div>
 
-      <p>
-        🔴 Não iniciar:
-        ${statistics.percentualVermelho}%
-      </p>
-    </div>
+      <div class="statistics-list">
+        <div class="statistics-item">
+          <div class="statistics-item-header">
+            <span class="statistics-name">
+              <span class="statistics-dot statistics-dot-verde"></span>
+              Treino liberado
+            </span>
+
+            <strong>
+              ${statistics.percentualVerde}%
+            </strong>
+          </div>
+
+          <p class="statistics-count">
+            ${statistics.verdes}
+            ${statistics.verdes === 1 ? "avaliação" : "avaliações"}
+          </p>
+
+          <div class="statistics-progress">
+            <div
+              class="statistics-progress-fill statistics-progress-verde"
+              style="width: ${statistics.percentualVerde}%"
+            ></div>
+          </div>
+        </div>
+
+        <div class="statistics-item">
+          <div class="statistics-item-header">
+            <span class="statistics-name">
+              <span class="statistics-dot statistics-dot-laranja"></span>
+              Atenção
+            </span>
+
+            <strong>
+              ${statistics.percentualLaranja}%
+            </strong>
+          </div>
+
+          <p class="statistics-count">
+            ${statistics.laranjas}
+            ${statistics.laranjas === 1 ? "avaliação" : "avaliações"}
+          </p>
+
+          <div class="statistics-progress">
+            <div
+              class="statistics-progress-fill statistics-progress-laranja"
+              style="width: ${statistics.percentualLaranja}%"
+            ></div>
+          </div>
+        </div>
+
+        <div class="statistics-item">
+          <div class="statistics-item-header">
+            <span class="statistics-name">
+              <span class="statistics-dot statistics-dot-vermelho"></span>
+              Não iniciar
+            </span>
+
+            <strong>
+              ${statistics.percentualVermelho}%
+            </strong>
+          </div>
+
+          <p class="statistics-count">
+            ${statistics.vermelhos}
+            ${statistics.vermelhos === 1 ? "avaliação" : "avaliações"}
+          </p>
+
+          <div class="statistics-progress">
+            <div
+              class="statistics-progress-fill statistics-progress-vermelho"
+              style="width: ${statistics.percentualVermelho}%"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
   `;
 }
 
