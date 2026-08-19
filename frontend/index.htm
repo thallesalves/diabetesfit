@@ -2,21 +2,50 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>DiabetesFit – Avaliador de Segurança no Treino</title>
+    <meta
+      name="description"
+      content="Avalie sua glicemia e insulina ativa antes do exercício com o DiabetesFit."
+    />
+
+    <title>DiabetesFit | Posso treinar agora?</title>
 
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
+    <!-- ======================================================
+         HEADER
+    ======================================================= -->
+
     <header>
       <h1>DiabetesFit</h1>
 
-      <p>Verifique se é seguro iniciar seu treino</p>
+      <h2>Posso treinar agora?</h2>
+
+      <p>Avalie sua glicemia e insulina ativa em poucos segundos.</p>
     </header>
 
+    <!-- ======================================================
+         CONTEÚDO PRINCIPAL
+    ======================================================= -->
+
     <main>
+      <!-- Introdução -->
+
+      <section class="evaluation-intro" aria-labelledby="evaluationIntroTitle">
+        <h2 id="evaluationIntroTitle">Avaliação pré-treino</h2>
+
+        <p>
+          Informe os dados abaixo para receber uma orientação baseada nas regras
+          clínicas atualmente implementadas no DiabetesFit.
+        </p>
+      </section>
+
+      <!-- Formulário -->
+
       <form id="formAvaliacao">
         <label for="glicemia"> Glicemia pré-treino: </label>
 
@@ -25,6 +54,7 @@
           id="glicemia"
           name="glicemia"
           placeholder="Ex: 120"
+          inputmode="decimal"
           required
         />
 
@@ -36,6 +66,7 @@
           name="insulina"
           step="0.1"
           placeholder="Ex: 1.5"
+          inputmode="decimal"
           required
         />
 
@@ -66,28 +97,110 @@
           <option value="ciclismo">Ciclismo</option>
         </select>
 
-        <button type="submit">Avaliar Segurança</button>
+        <button type="submit">Avaliar segurança</button>
       </form>
 
-      <section id="resultado" class="oculto" aria-live="polite"></section>
+      <!-- Resultado -->
 
-      <section id="historySection">
-        <section id="statisticsSection"></section>
+      <section
+        id="resultado"
+        class="oculto"
+        aria-live="polite"
+        aria-atomic="true"
+      ></section>
+
+      <!-- Feedback -->
+
+      <section
+        id="feedbackSection"
+        class="feedback-card oculto"
+        aria-labelledby="feedbackTitle"
+      >
+        <h2 id="feedbackTitle">Ajude a melhorar o DiabetesFit</h2>
+
+        <p>
+          Encontrou algum problema ou tem alguma sugestão sobre sua experiência?
+        </p>
+
+        <a
+          href="https://forms.gle/c748rS3tUeSTbx318"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Enviar feedback →
+        </a>
+      </section>
+
+      <!-- Histórico + Estatísticas -->
+
+      <section id="historySection" aria-labelledby="historyTitle">
+        <!-- Estatísticas -->
+
+        <section
+          id="statisticsSection"
+          aria-label="Resumo das avaliações"
+        ></section>
+
+        <!-- Cabeçalho do histórico -->
 
         <div class="history-header">
-          <h2>Histórico de avaliações</h2>
+          <h2 id="historyTitle">Histórico de avaliações</h2>
 
           <button type="button" id="clearHistoryButton">
             Limpar histórico
           </button>
         </div>
 
+        <!-- Lista -->
+
         <div id="historyList"></div>
+      </section>
+
+      <!-- Aviso importante -->
+
+      <section class="safety-notice" aria-labelledby="safetyNoticeTitle">
+        <h2 id="safetyNoticeTitle">Aviso importante</h2>
+
+        <p>
+          O DiabetesFit fornece orientações baseadas nas regras clínicas
+          atualmente implementadas, mas não substitui avaliação médica nem
+          acompanhamento profissional.
+        </p>
+
+        <p>
+          Em caso de sintomas, hipoglicemia grave ou dúvidas sobre seu
+          tratamento, procure um profissional de saúde.
+        </p>
       </section>
     </main>
 
+    <!-- ======================================================
+         RODAPÉ
+    ======================================================= -->
+
     <footer>
-      <p>© 2025 DiabetesFit</p>
+      <nav class="footer-nav" aria-label="Informações do DiabetesFit">
+        <a href="about.html">Sobre</a>
+
+        <span aria-hidden="true">•</span>
+
+        <a href="#">Privacidade</a>
+
+        <span aria-hidden="true">•</span>
+
+        <a href="#">Termos</a>
+
+        <span aria-hidden="true">•</span>
+
+        <a
+          href="https://forms.gle/c748rS3tUeSTbx318"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Feedback</a
+        >
+      </nav>
+
+      <p>© 2026 DiabetesFit</p>
     </footer>
 
     <script type="module" src="main.js"></script>

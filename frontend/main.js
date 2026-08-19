@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const resultadoBox = document.getElementById("resultado");
 
+  const feedbackSection = document.getElementById("feedbackSection");
+
   const historyList = document.getElementById("historyList");
 
   const clearHistoryButton = document.getElementById("clearHistoryButton");
@@ -132,5 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateHistoryInterface();
 
     renderResult(resultadoBox, resultado);
+
+    feedbackSection.classList.remove("oculto");
   });
 });
