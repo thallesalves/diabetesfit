@@ -135,6 +135,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderResult(resultadoBox, resultado);
 
+    // Analytics: records only that a valid assessment was completed.
+    // No glucose, insulin, exercise, or clinical result data is sent.
+    if (typeof gtag === "function") {
+      gtag("event", "assessment_completed");
+    }
+
     feedbackSection.classList.remove("oculto");
   });
 });
