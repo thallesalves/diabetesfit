@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const feedbackSection = document.getElementById("feedbackSection");
 
+  const feedbackLink = document.getElementById("feedbackLink");
+
   const historyList = document.getElementById("historyList");
 
   const clearHistoryButton = document.getElementById("clearHistoryButton");
@@ -74,6 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
     clearHistory();
 
     updateHistoryInterface();
+  });
+
+  feedbackLink.addEventListener("click", () => {
+    // Analytics: records only that the feedback link was clicked.
+    // No health or assessment data is sent.
+    if (typeof gtag === "function") {
+      gtag("event", "feedback_clicked");
+    }
   });
 
   form.addEventListener("submit", (event) => {
