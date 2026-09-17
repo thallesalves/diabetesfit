@@ -191,8 +191,12 @@ form select {
 
 /* Prevent native time input from overflowing on mobile browsers */
 form input[type="time"] {
+  display: block;
+  width: 100%;
   min-width: 0;
   max-width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 form input::placeholder {
