@@ -112,8 +112,8 @@ export function renderHistory(historyList, history) {
             </p>
 
             <p>
-              <strong>Insulina ativa:</strong>
-              ${evaluation.insulinaAtiva} U
+              <strong>Última dose de insulina rápida:</strong>
+              ${evaluation.insulinaAtiva} 
             </p>
 
             <p>
